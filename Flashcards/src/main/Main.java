@@ -57,11 +57,16 @@ public class Main extends JFrame implements Menus{
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		//Title of the app
 		JLabel title = new JLabel("Flashcards");
 		title.setFont(new Font("Helvetica", Font.BOLD,18));
 		c.gridx = 0;
 		c.gridy = 0;
 		main.add(title,c);
+		
+		//Group of buttons
+		JPanel buttons = new JPanel();
+		main.setLayout(new GridBagLayout());
 				
 		return main;
 	}
