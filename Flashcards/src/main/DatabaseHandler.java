@@ -10,12 +10,18 @@ import java.sql.DriverManager;
  */
 public class DatabaseHandler {
 	
+	/**
+	 * Connects to MySQL server. You will
+	 * need to enter your username and
+	 * password.
+	 * @return
+	 */
 	public static Connection getConnection() {
 			
 			try {
 				String driver = "com.mysql.cj.jdbc.Driver";
 				String url = "jdbc:mysql://localhost:3306/Flashcards";
-				String username = "root", password = "pass";
+				String username = "root", password = "friendhomie9966";
 				Class.forName(driver);
 				Connection connection = DriverManager.getConnection(url, username, password);
 				System.out.println("Database Connected!");
