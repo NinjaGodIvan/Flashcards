@@ -2,24 +2,42 @@ package main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/***
+ * DatabaseHandler is responsible for adding flashcards
+ * and their sets as well as deleting them
+ * @author ninjagodivan
+ *
+ */
 public class DatabaseHandler {
 	
-	public static Connection getConnection() throws Exception {
+	public static Connection getConnection() {
 			
 			try {
 				String driver = "com.mysql.cj.jdbc.Driver";
 				String url = "jdbc:mysql://localhost:3306/Flashcards";
-				String username = "user", password = "pass";
+				String username = "root", password = "friendhomie9966";
 				Class.forName(driver);
 				
 				Connection connection = DriverManager.getConnection(url, username, password);
 				System.out.println("Database Connected!");
-				return connection;
+				return connection; 
 			} catch(Exception e) {
 				System.out.println(e);
 			}
 			
 			return null;
 		}
+	
+	public static void addFlashCardSet(String newSet) {
+		
+		try {
+			
+			Connection connect = getConnection();
+			
+		}catch(Exception e) {
+			
+		}
+		
+	}
 
 }
