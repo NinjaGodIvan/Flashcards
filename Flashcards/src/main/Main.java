@@ -42,8 +42,8 @@ public class Main extends JFrame implements Menus{
 
 	//Driver function
 	public static void main(String[] args) throws Exception {
-		new Main();
-		//DatabaseHandler.getConnection();
+		//new Main();
+		DatabaseHandler.getConnection();
 	}
 	
 	/**
