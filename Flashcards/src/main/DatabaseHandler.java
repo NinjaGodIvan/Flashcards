@@ -60,7 +60,7 @@ public class DatabaseHandler {
 		
 		try {
 			Connection connect = getConnection();
-			PreparedStatement add = connect.prepareStatement("INSERT INTO " + flashcardSet + "VALUES(" + question + "," + answer + ");");
+			PreparedStatement add = connect.prepareStatement("INSERT INTO " + flashcardSet + " (question, answer) VALUES('" + question + "','" + answer + "');");
 			add.executeUpdate();
 		}catch(Exception e) {
 			System.out.println(e);
@@ -72,24 +72,28 @@ public class DatabaseHandler {
 	 * Returns all flashcard sets from the flashcard database
 	 * @return 
 	 */
-	public static void getAllFlashCardSets(){
+	public static ArrayList<String> getAllFlashCardSets(){
 		
+		//Temp flashcards array that gets returned
 		ArrayList<String> flashcardSets = new ArrayList<>();
 		
 		try {
+			
+			//Gets all tables from Flashcards schema
 			Connection connect = getConnection();
 			PreparedStatement getAll = connect.prepareStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'Flashcards';");
 			ResultSet res = getAll.executeQuery();
 			
+			//Adds all flashcards sets to the array list
 			while(res.next()) {
-				System.out.println(res.getString("TABLE_NAME"));
+				flashcardSets.add(res.getString("TABLE_NAME"));
 			}
 			
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 		
-		//return flashcardSets;
+		return flashcardSets;
 	}
 	
 	/**
@@ -102,13 +106,37 @@ public class DatabaseHandler {
 		try {
 			
 			Connection connect = getConnection();
-			PreparedStatement get = connect.prepareStatement("SELECT * FROM flashcard_sets WHERE flashcard_setName = '" + set + "'");
+			PreparedStatement get = connect.prepareStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'Flashcards' AND TABLE_NAME = '" + set + "'");
 			ResultSet res = get.executeQuery();
 			
+			//It is false when nothing is contained in the query
 			if(res.next())
 				return true;
 		}catch(Exception e) {
 			System.out.print(e);
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Checks if the flashcard already exists in the set.
+	 * NOTE: question is the name of the flashcard
+	 * @param question, flashcardSet
+	 * @return
+	 */
+	public static boolean flashcardExists(String question, String flashcardSet) {
+		
+		try {
+			
+			Connection connect = getConnection();
+			PreparedStatement get = connect.prepareStatement("SELECT question FROM " + flashcardSet + " WHERE question = '" + question + "';");
+			ResultSet res = get.executeQuery();
+			if(res.next())
+				return true;
+			
+		}catch(Exception e) {
+			System.out.println(e);
 		}
 		
 		return false;
