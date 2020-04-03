@@ -2,7 +2,6 @@ package main;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
 import javax.swing.*;
 
 /**
@@ -410,24 +409,21 @@ public class App extends JFrame implements Menus{
 		c.gridx = 0;
 		c.gridy = 0;
 		main.add(title,c);
+		
+		//Scroll Bar Component
+		JScrollPane scroll = new JScrollPane();
+				
+		//Scroll bars only appear when there are more flashcard items or if the flashcard name is longer
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setViewportView(flashcardHandler.createFlashcardView());
+		scroll.setPreferredSize(new Dimension(320,170));
+		scroll.revalidate();
 	
-		//Flashcard Structure
-		JPanel flashcard_view = new JPanel(new GridBagLayout());
-		flashcard_view.setBackground(Color.WHITE);
-		flashcard_view.setPreferredSize(new Dimension(320,170));
-		
-		//Shows either the question or answer of the flashcard
-		JLabel description = new JLabel(flashcardHandler.getQuestion());
-		description.setFont(new Font("Helvetica", Font.PLAIN, 14));
-		c.gridx = 0;
-		c.gridy = 0;
-		flashcard_view.add(description, c);
-		
 		//Adds flashcard structure to main
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(10,0,0,0);
-		main.add(flashcard_view,c);
+		main.add(scroll,c);
 		
 		//Button Panel
 		JPanel buttons = new JPanel();
@@ -448,6 +444,13 @@ public class App extends JFrame implements Menus{
 		mainMenu = new JButton("Main Menu"),
 		flashcardSetSelection = new JButton("My Sets");
 		
+		//Initializes previous button to be disabled
+		previous.setEnabled(false);
+		
+		//If there is only one flashcard, then disable the next button
+		if(flashcardHandler.getFlashcardSet().size() == 1)
+			next.setEnabled(false);
+		
 		//Fires when a user presses either of the buttons
 		ActionListener actionListener = new ActionListener() {
 
@@ -457,29 +460,57 @@ public class App extends JFrame implements Menus{
 				
 				if(e.getSource().equals(previous) || e.getSource().equals(next)) {
 				
-					if(e.getSource().equals(previous)) 
+					if(e.getSource().equals(previous)) { 
 						flashcardHandler.prevFlashcard();
-					else 
-						flashcardHandler.nextFlashcard();
+						//Disables previous button if the user is at the first flashcard
+						if(flashcardHandler.getFlashcardTracker() == 0) {
+							previous.setEnabled(false);
+						}
 						
-					if(flashcardHandler.getIndicator() == 0)
-						description.setText(flashcardHandler.getQuestion());
-					else
-						description.setText(flashcardHandler.getAnswer());
+						//Enables the next button if it is disabled
+						if(!next.isEnabled()) {
+							next.setEnabled(true);
+						}
+					}
+					else {
+						flashcardHandler.nextFlashcard();
+						//Disables next button if the user is at the last flashcard
+						if(flashcardHandler.getFlashcardTracker() == flashcardHandler.getFlashcardSet().size() - 1) { 
+							next.setEnabled(false);
+						}
+						
+						//Enables the previous button if it is disabled
+						if(!previous.isEnabled()) {
+							previous.setEnabled(true);
+						}	
+					}
+					
+					//Switches the flashcard to set for the scroll
+					scroll.setViewportView(flashcardHandler.createFlashcardView());
 			
 				} else if(e.getSource().equals(glossary)) {
 					switchPanel(main, flashcardGlossary(flashcardHandler.getFlashcardSet()));
 				} else if(e.getSource().equals(switcher)) {
 					
+					//Switches from question to answer (vice-versa)
 					flashcardHandler.switchIndicator();
 					
-					if(flashcardHandler.getIndicator() == 0) {
+					if(flashcardHandler.getFlashcardIndicator() == 0) {
 						switcher.setText("Answer");
-						description.setText(flashcardHandler.getQuestion());
+						if(!next.isEnabled() && flashcardHandler.getFlashcardTracker() != flashcardHandler.getFlashcardSet().size() - 1)
+							next.setEnabled(true);
+						if(!previous.isEnabled() && flashcardHandler.getFlashcardTracker() > 0)
+							previous.setEnabled(true);
+						
 					} else {
 						switcher.setText("Question");
-						description.setText(flashcardHandler.getAnswer());
+						if(next.isEnabled())
+							next.setEnabled(false);
+						if(previous.isEnabled())
+							previous.setEnabled(false);
 					}
+					
+					scroll.setViewportView(flashcardHandler.createFlashcardView());
 					
 				} else if(e.getSource().equals(mainMenu)) {
 					flashcardHandler = null;
@@ -1185,7 +1216,7 @@ public class App extends JFrame implements Menus{
 						error_message.setText("Please select a flashcard set before proceeding.");
 					else {
 						
-
+						//Code this
 						
 						switchPanel(main, viewFlashcards());
 					}

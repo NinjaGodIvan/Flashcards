@@ -43,9 +43,9 @@ public class DatabaseHandler {
 			Connection connect = getConnection();
 			PreparedStatement add = connect.prepareStatement("CREATE TABLE `[" + newSet + "]`(flashcard_id INT AUTO_INCREMENT PRIMARY KEY, question TEXT, answer TEXT);");
 			add.executeUpdate();
-			System.out.println("Success!");
+			System.out.println("addFlashCardSet function success!!");
 		}catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\naddFlashCardSet failed:\n" + e);
 		}
 		
 	}
@@ -56,9 +56,9 @@ public class DatabaseHandler {
 			Connection connect = getConnection();
 			PreparedStatement remove = connect.prepareStatement("DROP TABLE `[" + goodByeSet + "]`;");
 			remove.executeUpdate();
-			System.out.println("Success!");
+			System.out.println("deleteFlashCardSet function success!!");
 		} catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\ndeleteFlashCardSet failed:\n" + e);
 		}
 	}
 	
@@ -74,9 +74,9 @@ public class DatabaseHandler {
 			Connection connect = getConnection();
 			PreparedStatement add = connect.prepareStatement("INSERT INTO `[" + flashcardSet + "]` (question, answer) VALUES('" + question + "','" + answer + "');");
 			add.executeUpdate();
-			System.out.println("Success!");
+			System.out.println("addFlashCard function success!!");
 		}catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\naddFlashCard failed:\n" + e);
 		}
 		
 	}
@@ -92,9 +92,9 @@ public class DatabaseHandler {
 			Connection connect = getConnection();
 			PreparedStatement remove = connect.prepareStatement("DELETE FROM `[" + flashcardSet + "]` WHERE question = '" + question + "';");
 			remove.executeUpdate();
-			System.out.println("Success!");
+			System.out.println("removeFlashCard function success!!");
 		} catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\nremoveFlashCard failed:\n" + e);
 		}
 		
 	}
@@ -121,9 +121,9 @@ public class DatabaseHandler {
 				//Needs to be trimmed to get rid of trailing spaces
 				flashcardSets.add(new_string.trim());
 			}
-			System.out.println("Success!");
+			System.out.println("getAllFlashCardSets function success!!");
 		}catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\ngetAllFlashCardSets failed:\n" + e);
 		}
 		
 		return flashcardSets;
@@ -150,9 +150,9 @@ public class DatabaseHandler {
 				flashcard.answer = res.getString(2);
 				flashcard_list.add(flashcard);
 			}
-			System.out.println("Success!");
+			System.out.println("getAllFlashcards function success!!");
 		} catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\ngetAllFlashcards failed:\n" + e);
 		}
 		
 		
@@ -171,14 +171,14 @@ public class DatabaseHandler {
 			Connection connect = getConnection();
 			PreparedStatement get = connect.prepareStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'Flashcards' AND TABLE_NAME = '" + flashcardSet + "'");
 			ResultSet res = get.executeQuery();
-			System.out.println("Success!");
+			System.out.println("flashcardSetExists function success!");
 
 			//It is false when nothing is contained in the query
 			if(res.next()) {
 				return true;
 			}
 		}catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\nflashcardSetExists failed:\n" + e);
 		}
 		
 		return false;
@@ -197,13 +197,13 @@ public class DatabaseHandler {
 			Connection connect = getConnection();
 			PreparedStatement get = connect.prepareStatement("SELECT question FROM `[" + flashcardSet + "]` WHERE question = '" + question + "';");
 			ResultSet res = get.executeQuery();
-			System.out.println("Success!");
+			System.out.println("flashcardExists function success!");
 			if(res.next()) {
 				return true;
 			}
 			
 		}catch(Exception e) {
-			System.out.println("Failed:\n" + e);
+			System.out.println("\nflashcardExists failed:\n" + e);
 		}
 		
 		return false;
