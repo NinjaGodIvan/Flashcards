@@ -14,7 +14,7 @@ public class DatabaseHandler {
 	/**
 	 * Connects to MySQL server. You will
 	 * need to enter your username and
-	 * password.
+	 * password. 
 	 * @return
 	 */
 	public static Connection getConnection() {
@@ -22,9 +22,10 @@ public class DatabaseHandler {
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
 			String url = "jdbc:mysql://localhost:3306/Flashcards";
-			String username = "root", password = "kidneyfella361";
+			String username = "root", password = "pass";
 			Class.forName(driver);
 			Connection connection = DriverManager.getConnection(url, username, password);
+			System.out.println("Connected to Database!");
 			return connection; 
 		} catch(Exception e) {
 			System.out.println("Unable to connect to database:\n " + e);
