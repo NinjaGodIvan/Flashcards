@@ -162,23 +162,15 @@ public class FlashcardHandler {
 		//String size of the question or answer
 		int descriptionSize = description.toCharArray().length;
 		
+		//Amount of characters per line
+		int char_limit = 30;
+		
 		/*
-		 * If the string has more than 30 characters, then string must be broken into substrings.
-		 * Otherwise, just add the description.
-		 * 
-		 * NOTE: If you decide to change the amount of characters per line, make SURE that you
-		 * change all values that:
-		 * - increment "i"; ex) i += 10
-		 * - compare with the description size; ex) if(descriptionSize > 10) 
-		 * - add to "i"; ex) description.substring(i, i + 10)
-		 * - checks if the last index of the substring and the next 
-		 *   one after contains a non-space character
-		 *   ex) if(description.charAt(i + 9) != ' ' && description.charAt(i + 10) != ' ')
-		 * 
-		 * Otherwise, you will MISS some trailing characters!!!
+		 * If the amount of characters of question or answer exceeds more than
+		 * the character limit, then split the question/answer into substrings. 
 		 */
-		if(descriptionSize > 30) {
-			for(int i = 0, j = 0; i < descriptionSize; i += 30, j++) {
+		if(descriptionSize > char_limit) {
+			for(int i = 0, j = 0; i < descriptionSize; i += char_limit, j++) {
 								
 				//Label that will be added in the flashcard
 				JLabel descriptionText;
@@ -194,10 +186,10 @@ public class FlashcardHandler {
 				 */
 				int decrementor = 0;
 				
-				if(i + 30 < descriptionSize) {
+				if(i + char_limit < descriptionSize) {
 											
 					//Takes 30 consecutive letters from the description
-					_substring = description.substring(i, i + 30);
+					_substring = description.substring(i, i + char_limit);
 					
 					
 					/* 
@@ -208,11 +200,11 @@ public class FlashcardHandler {
 					 * letter needs to be moved to the next line
 					 * 
 					 */
-					if(description.charAt(i + 29) != ' ' && description.charAt(i + 30) != ' ') {
+					if(description.charAt(i + (char_limit - 1)) != ' ' && description.charAt(i + char_limit) != ' ') {
 						
 						
 						//Gets the last index of the substring
-						int index = 29;
+						int index = char_limit - 1;
 						
 						//Loops through the list backwards to find a space
 						do {
@@ -229,7 +221,7 @@ public class FlashcardHandler {
 						 * Otherwise, no letters are to be moved to the next line.
 						 */
 						if(index > -1) {
-							_substring = description.substring(i, (i + 30) - decrementor);
+							_substring = description.substring(i, (i + char_limit) - decrementor);
 							hasMovedtoNextLine = true;
 						}
 					}
