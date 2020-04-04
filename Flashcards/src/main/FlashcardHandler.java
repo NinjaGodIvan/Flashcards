@@ -4,7 +4,7 @@ import java.util.*;
 import javax.swing.*;
 
 /**
- * Flashcard which includes the question and it answer
+ * Flashcard which includes the question and its answer
  * @author ninjagodivan
  */
 class Flashcard{
