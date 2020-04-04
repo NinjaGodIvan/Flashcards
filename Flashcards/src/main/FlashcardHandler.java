@@ -165,71 +165,92 @@ public class FlashcardHandler {
 
 		//String size of the question or answer
 		int descriptionSize = description.toCharArray().length;
-		//Amount of letters that it needs to move back
-		int descriptionLetterBackwardsMover = 0;
-		//False if the word hasn't move to the next line
-		boolean hasMovedtoNextLine = false;
-		
 		
 		/*
 		 * If the string has more than 30 characters, then string must be broken into substrings.
-		 * Otherwise, just add the description
+		 * Otherwise, just add the description.
+		 * 
+		 * NOTE: If you decide to change the amount of characters per line, make SURE that you
+		 * change all values that:
+		 * - increment "i"; ex) i += 10
+		 * - compare with the description size; ex) if(descriptionSize > 10) 
+		 * - add to "i"; ex) description.substring(i, i + 10)
+		 * - checks if the last index of the substring and the next 
+		 *   one after contains a non-space character
+		 *   ex) if(description.charAt(i + 9) != ' ' && description.charAt(i + 10) != ' ')
+		 * 
+		 * Otherwise, you will MISS some trailing characters!!!
 		 */
 		if(descriptionSize > 30) {
 			for(int i = 0, j = 0; i < descriptionSize; i += 30, j++) {
-				
-				
+								
 				//Label that will be added in the flashcard
 				JLabel descriptionText;
 				//Substring of the string of question/answer
 				String _substring = null;
-				//Initializes to the last index of the substring
-				int index;
+				//False if the word hasn't move to the next line
+				boolean hasMovedtoNextLine = false;
 				
-				//Iterates back to a letter(s) of the description
-				if(hasMovedtoNextLine) {
-					i -= descriptionLetterBackwardsMover;
-					i++;
-					hasMovedtoNextLine = false;
-				}
+				/*
+				 * Subtracts the value that references the last index of the substring.
+				 * It's responsible for repositioning i before the next iteration to
+				 * get the rest of the characters.
+				 */
+				int decrementor = 0;
 				
 				if(i + 30 < descriptionSize) {
 											
 					//Takes 30 consecutive letters from the description
 					_substring = description.substring(i, i + 30);
 					
-					/* (FIX THIS SOON)
+					
+					/* 
 					 * Must check if the last char doesn't contain
 					 * any character besides a space AND that there
 					 * is not a space after that letter. If so,
 					 * then the word that is associated with that
 					 * letter needs to be moved to the next line
 					 * 
-					 *
-					if(_substring.charAt(29) != ' ' && description.charAt(i + 30) != ' ') {
+					 */
+					if(description.charAt(i + 29) != ' ' && description.charAt(i + 30) != ' ') {
 						
-						index = _substring.length()-1;
+						
+						//Gets the last index of the substring
+						int index = 29;
 						
 						//Loops through the list backwards to find a space
-						while(_substring.charAt(index) != ' ') {
+						do {
+							//System.out.println("Index: " + index);
 							index--;
-							descriptionLetterBackwardsMover++;
-						}
+							decrementor++;
+							if(index == -1)
+								break;
+							
+						} while(_substring.charAt(index) != ' ');
 						
-						//Updates the substring to where it ends with a space
-						_substring = description.substring(i, index+1);
-						hasMovedtoNextLine = true;
-					}*/
+						/*
+						 * Updates the substring to where it ends with a space.
+						 * Otherwise, no letters are to be moved to the next line.
+						 */
+						if(index > -1) {
+							_substring = description.substring(i, (i + 30) - decrementor);
+							hasMovedtoNextLine = true;
+						}
+					}
 					
 				}
 				else
 					_substring = description.substring(i, descriptionSize);
-				
+								
 				descriptionText = new JLabel(_substring);
 				descriptionText.setFont(new Font("Helvetica", Font.PLAIN, 14));
 				c.gridx = 0;
 				c.gridy = j;
 				flashcard_view.add(descriptionText, c);
+				
+				//Moves 'i' to get all letters to the be the part of the next substring
+				if(hasMovedtoNextLine) 
+					i -= decrementor;
 			}
 		} else {
 			JLabel descriptionText = new JLabel(description);
