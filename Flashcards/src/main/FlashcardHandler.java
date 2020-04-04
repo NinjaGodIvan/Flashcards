@@ -66,8 +66,7 @@ public class FlashcardHandler {
 	 * Goes to the next flashcard
 	 */
 	public void nextFlashcard() {
-		if(flashcardTracker + 1 != flashcard_list.size())
-			flashcardTracker++;
+		flashcardTracker++;
 		System.out.println("Current flashcard position at: " + flashcardTracker);
 	}
 	
@@ -75,10 +74,7 @@ public class FlashcardHandler {
 	 * Goes to the previous flashcard
 	 */
 	public void prevFlashcard() {
-		
-		if(flashcardTracker - 1 != -1)
-			flashcardTracker--;
-		
+		flashcardTracker--;
 		System.out.println("Current flashcard position at: " + flashcardTracker);
 	}
 	
