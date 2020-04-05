@@ -898,6 +898,7 @@ public class App extends JFrame implements Menus{
 	 * is empty and the user needs to make some
 	 * 
 	 * 1: Go back to delete flashcard settings
+	 * 3: Go back to view flashcard settings
 	 */
 	public JPanel failMessage(int key, String flashcardSet) {
 
