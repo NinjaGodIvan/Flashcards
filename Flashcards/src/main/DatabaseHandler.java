@@ -25,7 +25,7 @@ public class DatabaseHandler {
 			String username = "root", password = "pass";
 			Class.forName(driver);
 			Connection connection = DriverManager.getConnection(url, username, password);
-			System.out.println("Connected to Database!");
+			//System.out.println("Connected to Database!");
 			return connection; 
 		} catch(Exception e) {
 			System.out.println("Unable to connect to database:\n " + e);

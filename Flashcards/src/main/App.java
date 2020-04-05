@@ -20,7 +20,7 @@ interface Menus {
 	JPanel successMessage(int message_id, String flashcardSet);
 	JPanel successMessage(int key, String question, String flashcardSet);
 	JPanel failMessage();
-	JPanel failMessage(String flashcardSet);
+	JPanel failMessage(int key, String flashcardSet);
 	JPanel flashcardSetSelection(int key);
 	JPanel flashcardGlossary(ArrayList <Flashcard> flashcard_list);
 }
@@ -38,7 +38,7 @@ public class App extends JFrame implements Menus{
 	//Item that is currently being selected (Should be initialized to have no characters)
 	private static String itemSelected = "";
 	//FlashcardHandler
-	FlashcardHandler flashcardHandler;
+	private FlashcardHandler flashcardHandler;
 	
 	/**
 	 * Program starts with the main menu
@@ -590,7 +590,7 @@ public class App extends JFrame implements Menus{
 		ArrayList <Flashcard> flashcard_list = DatabaseHandler.getAllFlashcards(flashcardSet);
 		
 		if(flashcard_list.isEmpty()) {
-			switchPanel(main, failMessage(flashcardSet));
+			switchPanel(main, failMessage(1, flashcardSet));
 		} else {
 			
 			//Title 
@@ -896,8 +896,10 @@ public class App extends JFrame implements Menus{
 	/**
 	 * Displayed a fail message because the flashcard set
 	 * is empty and the user needs to make some
+	 * 
+	 * 1: Go back to delete flashcard settings
 	 */
-	public JPanel failMessage(String flashcardSet) {
+	public JPanel failMessage(int key, String flashcardSet) {
 
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -929,7 +931,7 @@ public class App extends JFrame implements Menus{
 		buttons.setLayout(new GridBagLayout());
 		
 		//Buttons from this panel
-		JButton 	flashCardSetButton = new JButton("Flashcard Set Selection"), mainMenu = new JButton("Main Menu");
+		JButton 	flashCardSetButton = new JButton("My Sets"), mainMenu = new JButton("Main Menu");
 
 		//Fires when either flashcard or main menu button is pressed
 		ActionListener actionListener = new ActionListener() {
@@ -938,7 +940,12 @@ public class App extends JFrame implements Menus{
 			public void actionPerformed(ActionEvent e) {
 				
 				if(e.getSource().equals(flashCardSetButton)) {
-					switchPanel(main,flashcardSetSelection(1));
+					
+					if(key == 1)
+						switchPanel(main,flashcardSetSelection(1));
+					else
+						switchPanel(main,flashcardSetSelection(3));
+
 				} else {
 					switchPanel(main,mainMenu());
 				}
@@ -1092,7 +1099,7 @@ public class App extends JFrame implements Menus{
 							ArrayList <Flashcard> flashcard_list = DatabaseHandler.getAllFlashcards(itemSelected);
 							
 							if(flashcard_list.isEmpty())
-								switchPanel(main,failMessage(itemSelected));
+								switchPanel(main,failMessage(1, itemSelected));
 							else
 								switchPanel(main,deleteFlashcard(itemSelected));
 						}
@@ -1104,7 +1111,7 @@ public class App extends JFrame implements Menus{
 							ArrayList <Flashcard> flashcard_list = DatabaseHandler.getAllFlashcards(itemSelected);
 							
 							if(flashcard_list.isEmpty())
-								switchPanel(main,failMessage(itemSelected));
+								switchPanel(main,failMessage(3, itemSelected));
 							else {
 								flashcardHandler = new FlashcardHandler(itemSelected);
 								switchPanel(main, viewFlashcards());

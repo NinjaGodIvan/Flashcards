@@ -221,7 +221,8 @@ public class FlashcardHandler {
 						 * Otherwise, no letters are to be moved to the next line.
 						 */
 						if(index > -1) {
-							_substring = description.substring(i, (i + char_limit) - decrementor);
+							_substring = description.substring(i, (i + char_limit) - (decrementor + 1));
+							//_substring = description.substring(i, (i + char_limit) - decrementor);
 							hasMovedtoNextLine = true;
 						}
 					}
