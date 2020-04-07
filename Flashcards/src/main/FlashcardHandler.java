@@ -3,6 +3,19 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+/************************************************
+ * FlashcardHandler library does the following: *
+ * 	- Initializing a flashcard set to set up    *
+ * 	  in creating flashcards.				   *
+ * 	- Switches the flashcard's question to	   *
+ * 	  answer or vice-versa.                     *
+ * 	- Switches flashcards.                      *
+ * 	- Keeps track of the user's current         *
+ *    flashcard.                                *
+ * 	- Creates a flashcard containing the        *
+ *    question and the answer.                  *
+ ************************************************/
+
 /**
  * Flashcard which includes the question and its answer
  * @author ninjagodivan
@@ -11,11 +24,6 @@ class Flashcard{
 	String question, answer;
 }
 
-/***
- * Flashcard Handler API 
- * @author ninjagodivan
- *
- */
 public class FlashcardHandler {
 	
 	/*
@@ -81,8 +89,9 @@ public class FlashcardHandler {
 	/**
 	 * Changes the flashcard
 	 */
-	public void changeFlashcard(String question) {
-	//	flashcardTracker = flashcard_list
+	public void changeFlashcard(int flashcardTracker) {
+		this.flashcardTracker = flashcardTracker;
+		System.out.println("Current flashcard position at: " + this.flashcardTracker);
 	}
 	
 	/**

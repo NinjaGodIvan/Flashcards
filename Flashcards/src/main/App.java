@@ -4,6 +4,12 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
+/*****************************************
+ * The App is responsible for setting up *
+ * graphical interfaces for the users to *
+ * view									*
+ ****************************************/
+
 /**
  * Interface that consists all menus
  * of the application.
@@ -15,22 +21,16 @@ interface Menus {
 	JPanel createFlashcardSet();
 	JPanel createFlashcard(String flashcardSet);
 	JPanel viewFlashcards();
-	JPanel deleteFlashcard(String flashcardSet);
-	JPanel editFlashcard();
-	JPanel successMessage(int message_id, String flashcardSet);
-	JPanel successMessage(int key, String question, String flashcardSet);
+	JPanel deleteFlashcard(String flashcardSet, ArrayList <Flashcard> flashcard_list);
+	JPanel editFlashcardStepOne(String flashcardSet, ArrayList <Flashcard> flashcard_list);
+	JPanel editFlashcardStepTwo(String flashcardSet, String oldQuestion, String oldAnswer);
+	JPanel successMessage(int key, String flashcardSet);
 	JPanel failMessage();
 	JPanel failMessage(int key, String flashcardSet);
 	JPanel flashcardSetSelection(int key);
-	JPanel flashcardGlossary(ArrayList <Flashcard> flashcard_list);
+	JPanel flashcardGlossary();
 }
 
-/***
- * This is the Java application that
- * takes over all the functionalities
- * @author ninjagodivan
- *
- */
 public class App extends JFrame implements Menus{
 	
 	//Serial Version
@@ -47,7 +47,6 @@ public class App extends JFrame implements Menus{
 		
 		//NOTE: When app starts, you can initially start up any GUI for debugging purposes
 		add(mainMenu());
-		//add(flashcardSetSelection(3));
 		
 		setTitle("Flashcards");
 		setSize(400,400);
@@ -72,6 +71,16 @@ public class App extends JFrame implements Menus{
 	 */
 	@Override
 	public JPanel mainMenu() {
+		
+		/*
+		 * If a user clicks a flashcard (set) item and 
+		 * returns back to main menu, reset it to nothing
+		 */
+		if(!itemSelected.equals("")) {
+			System.out.println("[Resetting itemSelected]");
+			itemSelected = "";
+		}
+			
 		
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -112,7 +121,7 @@ public class App extends JFrame implements Menus{
 				} else if(e.getSource().equals(viewFlashCards)) {
 					switchPanel(main, flashcardSetSelection(3));
 				} else {
-					switchPanel(main, editFlashcard());
+					switchPanel(main, flashcardSetSelection(4));
 				}
 			}
 		};
@@ -177,7 +186,7 @@ public class App extends JFrame implements Menus{
 	 */
 	@Override
 	public JPanel createFlashcardSet() {
-		
+				
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -275,6 +284,10 @@ public class App extends JFrame implements Menus{
 	@Override
 	public JPanel createFlashcard(String flashcardSet) {
 		
+		//Restores itemSelected back to nothing
+		System.out.println("[Resetting itemSelected]");
+		itemSelected = "";
+		
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -290,7 +303,7 @@ public class App extends JFrame implements Menus{
 		instruction.setFont(new Font("Helvetica", Font.PLAIN, 12));
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(10,0,0,0);
+		c.insets = new Insets(5,0,0,0);
 		main.add(instruction,c);
 				
 		//Error message which is initialized to contain nothing
@@ -308,31 +321,46 @@ public class App extends JFrame implements Menus{
 		JLabel questionLabel = new JLabel("Question:");
 		c.gridx = 0;
 		c.gridy = 0;
-		c.anchor = GridBagConstraints.EAST;
+		c.insets = new Insets(0,0,0,0);
+		c.anchor = GridBagConstraints.WEST;
 		form.add(questionLabel,c);
+		
+		//Gets user to ask a question
+		JTextArea question = new JTextArea();
+		question.setLineWrap(true);
+		question.setWrapStyleWord(true);
+		
+		//Applys scrollbar and adds question to the form
+		JScrollPane scroll_one = new JScrollPane(question);
+		scroll_one.setPreferredSize(new Dimension(200,80));
+		c.gridx = 0;
+		c.gridy = 1;
+		form.add(scroll_one,c);
 		
 		JLabel answerLabel = new JLabel("Answer:");
 		c.gridx = 0;
-		c.gridy = 1;
-		c.insets = new Insets (10,30,0,0);
+		c.gridy = 2;
+		c.insets = new Insets(5,0,0,0);
 		form.add(answerLabel,c);
 		
-		JTextField question = new JTextField();
-		question.setPreferredSize(new Dimension(200,30));
-		c.gridx = 1;
-		c.gridy = 0;
-		form.add(question,c);
-		
-		JTextField answer = new JTextField();
-		answer.setPreferredSize(new Dimension(200,30));
-		c.gridx = 1;
-		c.gridy = 1;
-		form.add(answer,c); 
+		//Gets user to put an answer
+		JTextArea answer = new JTextArea();
+		answer.setLineWrap(true);
+		answer.setWrapStyleWord(true);
+
+		//Applys scrollbar and adds answer to the form
+		JScrollPane scroll_two = new JScrollPane(answer);
+		scroll_two.setPreferredSize(new Dimension(200,80));
+		c.gridx = 0;
+		c.gridy = 3;
+		c.insets = new Insets(0,0,0,0);
+		form.add(scroll_two,c);
 		
 		//Adds the form panel to the main
 		c.gridx = 0;
 		c.gridy = 3;
 		c.insets = new Insets(10,0,0,0);
+		c.anchor = GridBagConstraints.CENTER;
 		main.add(form,c);
 		
 		JPanel buttons = new JPanel();
@@ -345,8 +373,6 @@ public class App extends JFrame implements Menus{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource().equals(back)) {
-					//Restores itemSelected back to nothing
-					itemSelected = "";
 					switchPanel(main, flashcardSetSelection(0));
 				} else {	
 					
@@ -355,10 +381,10 @@ public class App extends JFrame implements Menus{
 						if(DatabaseHandler.flashcardExists(question.getText().trim(), flashcardSet)) {
 							errMessage.setText("This flashcard has already exists in this set.");
 						} else if (question.getText().trim().length() == 0 || answer.getText().trim().length() == 0) {
-							errMessage.setText("You must provide a question and answer for the flashcard.");
+							errMessage.setText("You must provide a question and answer.");
 						} else {
 							DatabaseHandler.addFlashCard(question.getText().trim(), answer.getText().trim(), flashcardSet);
-							switchPanel(main,successMessage(0,question.getText().trim(),flashcardSet));
+							switchPanel(main,successMessage(3,flashcardSet));
 						}
 			
 					}catch(Exception ex) {
@@ -397,7 +423,15 @@ public class App extends JFrame implements Menus{
 	public JPanel viewFlashcards() {
 		
 		//Restores back to nothing
+		System.out.println("[Resetting itemSelected]");
 		itemSelected = "";
+		
+		/*
+		 * This occurs when the user goes to the glossary,
+		 * but left the flashcard to display the answer
+		 */
+		if(flashcardHandler.getFlashcardIndicator() == 1)
+			flashcardHandler.switchIndicator();
 
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -444,11 +478,11 @@ public class App extends JFrame implements Menus{
 		mainMenu = new JButton("Main Menu"),
 		flashcardSetSelection = new JButton("My Sets");
 		
-		//Initializes previous button to be disabled
-		previous.setEnabled(false);
+		//Initializes previous and/or next button to be disabled
+		if(flashcardHandler.getFlashcardTracker() == 0)
+			previous.setEnabled(false);
 		
-		//If there is only one flashcard, then disable the next button
-		if(flashcardHandler.getFlashcardSet().size() == 1)
+		if(flashcardHandler.getFlashcardTracker() == flashcardHandler.getFlashcardSet().size() - 1)
 			next.setEnabled(false);
 		
 		//Fires when a user presses either of the buttons
@@ -489,7 +523,7 @@ public class App extends JFrame implements Menus{
 					scroll.setViewportView(flashcardHandler.createFlashcardView());
 			
 				} else if(e.getSource().equals(glossary)) {
-					switchPanel(main, flashcardGlossary(flashcardHandler.getFlashcardSet()));
+					switchPanel(main, flashcardGlossary());
 				} else if(e.getSource().equals(switcher)) {
 					
 					//Switches from question to answer (vice-versa)
@@ -577,161 +611,412 @@ public class App extends JFrame implements Menus{
 	 * Allows user to delete flashcard(s)
 	 */
 	@Override
-	public JPanel deleteFlashcard(String flashcardSet) {
+	public JPanel deleteFlashcard(String flashcardSet, ArrayList <Flashcard> flashcard_list) {
 		
 		//Restoring itemSelected to nothing
+		System.out.println("[Resetting itemSelected]");
+		itemSelected = "";
+		
+		JPanel main = new JPanel();
+		main.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+			
+		//Title 
+		JLabel title = new JLabel("Select a flashcard(s) to delete.");
+		title.setFont(new Font("Helvetica", Font.BOLD,16));
+		c.gridx = 0;
+		c.gridy = 0;
+		main.add(title,c);
+			
+		//Error Message
+		JLabel err_message = new JLabel("");
+		err_message.setFont(new Font("Helvetica",Font.PLAIN, 12));
+		err_message.setForeground(Color.RED);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(10,0,0,0);
+		main.add(err_message,c);
+			
+		//Displays all flashcards from a specified set
+		JPanel flashcardView = new JPanel();
+		flashcardView.setLayout(new BoxLayout(flashcardView, BoxLayout.Y_AXIS));
+			
+		//Sets up the scroll panel
+		JScrollPane scroll = new JScrollPane();
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setViewportView(flashcardView);
+		scroll.setPreferredSize(new Dimension(300,200));
+		scroll.revalidate();
+			
+		//Group of flashcard buttons
+		JCheckBox button;
+			
+		//List of flashcards to be removed
+		ArrayList <String> flashcardRemover = new ArrayList<>();
+									
+		//Fires when a user clicks a flashcard
+		ItemListener itemListener = new ItemListener() {
+				
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+					
+				//Gets the button
+				AbstractButton src = (AbstractButton) e.getSource();
+					
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					flashcardRemover.add(src.getText());
+				} else {
+
+					for(int i = 0; i < flashcardRemover.size(); i++) {
+						if(flashcardRemover.get(i) == src.getText()) {
+							flashcardRemover.remove(i);
+							break;
+						}
+					}
+				}
+			}				
+		};
+			
+		//Adds buttons in the scroll panel
+		for(int i = 0; i < flashcard_list.size(); i++) {
+				
+			button = new JCheckBox(flashcard_list.get(i).question);
+			button.addItemListener(itemListener);
+			flashcardView.add(button);
+		}
+			
+		//Adds scroll panel to the main
+		c.gridx = 0;
+		c.gridy = 2;
+		c.anchor = GridBagConstraints.CENTER;
+		main.add(scroll,c);
+		
+		//Button panel for flashcard set and main menu
+		JPanel buttons_panel = new JPanel();
+		buttons_panel.setLayout(new GridBagLayout());
+		
+		JButton button1 = new JButton("My Sets"), button2 = new JButton("Main Menu"), button3 = new JButton("Submit");
+		
+		ActionListener actionListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource().equals(button1)) {
+					switchPanel(main,flashcardSetSelection(1));
+				} else if(e.getSource().equals(button2)) {
+					switchPanel(main, mainMenu());
+				} else {
+					
+					if(flashcardRemover.isEmpty()) {
+						err_message.setText("Select at least one flashcard to remove.");
+					} else {
+						
+						//Deletes all selected flashcards
+						for(int i = 0; i < flashcardRemover.size(); i++) {
+							DatabaseHandler.removeFlashCard(flashcardRemover.get(i), flashcardSet);
+						}
+						
+						switchPanel(main, successMessage(2, flashcardSet));
+					}
+				}
+			}
+			
+		};
+		
+		//Adds Submit button
+		button3.addActionListener(actionListener);
+		button3.setPreferredSize(new Dimension(200,30));
+		c.gridx = 0;
+		c.gridy = 0;
+		buttons_panel.add(button3,c);
+		
+		//Adds Flashcard Set Selection button
+		button1.addActionListener(actionListener);
+		button1.setPreferredSize(new Dimension(200,30));
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5,0,0,0);
+		buttons_panel.add(button1,c);
+		
+		//Adds Main Menu button
+		button2.addActionListener(actionListener);
+		button2.setPreferredSize(new Dimension(200,30));
+		c.gridx = 0;
+		c.gridy = 2;
+		buttons_panel.add(button2,c);
+		
+		//Adds button panel to main
+		c.gridx = 0;
+		c.gridy = 3;
+		c.insets = new Insets(10,0,0,0);
+		main.add(buttons_panel,c);
+		
+		return main;
+	}
+
+	/**
+	 * Edit Flashcard Step 1: Allows user to select a flashcard
+	 * to edit
+	 */
+	public JPanel editFlashcardStepOne(String flashcardSet,  ArrayList <Flashcard> flashcard_list) {
+				
+		JPanel main = new JPanel();
+		main.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		//Title 
+		JLabel title = new JLabel("Select a flashcard to edit.");
+		title.setFont(new Font("Helvetica", Font.BOLD,16));
+		c.gridx = 0;
+		c.gridy = 0;
+		main.add(title,c);
+			
+		//Error Message
+		JLabel err_message = new JLabel("");
+		err_message.setFont(new Font("Helvetica",Font.PLAIN, 12));
+		err_message.setForeground(Color.RED);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(10,0,0,0);
+		main.add(err_message,c);
+			
+		//Displays all flashcards from a specified set
+		JPanel flashcardView = new JPanel();
+		flashcardView.setLayout(new BoxLayout(flashcardView, BoxLayout.Y_AXIS));
+			
+		//Sets up the scroll panel
+		JScrollPane scroll = new JScrollPane();
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setViewportView(flashcardView);
+		scroll.setPreferredSize(new Dimension(300,200));
+		scroll.revalidate();
+		
+		//Group of flashcard buttons
+		ButtonGroup buttons = new ButtonGroup();
+		
+		ItemListener itemListener = new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				
+				//Gets the button
+				AbstractButton src = (AbstractButton) e.getSource();
+				itemSelected = src.getText();
+			}
+		};
+				
+		//Displays all flashcard items
+		for(int i = 0; i < flashcard_list.size(); i++) {
+			JRadioButton button = new JRadioButton(flashcard_list.get(i).question);
+			button.addItemListener(itemListener);
+			flashcardView.add(button);
+			buttons.add(button);
+		}
+		
+		//Adds scroll and flashcard items to main
+		c.gridx = 0;
+		c.gridy = 2;
+		main.add(scroll,c);
+		
+		//Button panel for flashcard set and main menu
+		JPanel buttons_panel = new JPanel();
+		buttons_panel.setLayout(new GridBagLayout());
+		
+		//List of buttons from buttons_panel
+		JButton button1 = new JButton("My Sets"), button2 = new JButton("Main Menu"), button3 = new JButton("Submit");
+		
+		ActionListener actionListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource().equals(button1)) {
+					switchPanel(main,flashcardSetSelection(4));
+				} else if(e.getSource().equals(button2)) {
+					switchPanel(main, mainMenu());
+				} else {
+					
+					if(itemSelected.equals("")) {
+						err_message.setText("Please select a flashcard before proceeding.");
+					} else {
+						Flashcard temp = DatabaseHandler.getFlashcard(flashcardSet, itemSelected);
+						switchPanel(main, editFlashcardStepTwo(flashcardSet, temp.question, temp.answer));
+					}
+				}
+			}
+		};
+		
+		//Adds Submit button
+		button3.addActionListener(actionListener);
+		button3.setPreferredSize(new Dimension(200,30));
+		c.gridx = 0;
+		c.gridy = 0;
+		buttons_panel.add(button3,c);
+		
+		//Adds Flashcard Set Selection button
+		button1.addActionListener(actionListener);
+		button1.setPreferredSize(new Dimension(200,30));
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5,0,0,0);
+		buttons_panel.add(button1,c);
+		
+		//Adds Main Menu button
+		button2.addActionListener(actionListener);
+		button2.setPreferredSize(new Dimension(200,30));
+		c.gridx = 0;
+		c.gridy = 2;
+		buttons_panel.add(button2,c);
+		
+		//Adds button panel to main
+		c.gridx = 0;
+		c.gridy = 3;
+		c.insets = new Insets(10,0,0,0);
+		main.add(buttons_panel,c);
+		
+		return main;
+	}
+	
+	/**
+	 * Edit Flashcard Step Two: Have user edit the flashcard
+	 */
+	public JPanel editFlashcardStepTwo(String flashcardSet, String oldQuestion, String oldAnswer) {
+		
+		//Restores itemSelected back to nothing
+		System.out.println("[Resetting itemSelected]");
 		itemSelected = "";
 		
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
-		//Gets all flashcards from a specified flashcard list
-		ArrayList <Flashcard> flashcard_list = DatabaseHandler.getAllFlashcards(flashcardSet);
+		JLabel title = new JLabel("Edit a Flashcard");
+		title.setFont(new Font("Helvetica",Font.BOLD,16));
+		c.gridx = 0;
+		c.gridy = 0;
+		main.add(title,c);
 		
-		if(flashcard_list.isEmpty()) {
-			switchPanel(main, failMessage(1, flashcardSet));
-		} else {
-			
-			//Title 
-			JLabel title = new JLabel("Select a flashcard(s) to delete.");
-			title.setFont(new Font("Helvetica", Font.BOLD,16));
-			c.gridx = 0;
-			c.gridy = 0;
-			main.add(title,c);
-			
-			//Error Message
-			JLabel err_message = new JLabel("");
-			err_message.setFont(new Font("Helvetica",Font.PLAIN, 12));
-			err_message.setForeground(Color.RED);
-			c.gridx = 0;
-			c.gridy = 1;
-			c.insets = new Insets(10,0,0,0);
-			main.add(err_message,c);
-			
-			//Displays all flashcards from a specified set
-			JPanel flashcardView = new JPanel();
-			flashcardView.setLayout(new BoxLayout(flashcardView, BoxLayout.Y_AXIS));
-			
-			//Sets up the scroll panel
-			JScrollPane scroll = new JScrollPane();
-			scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-			scroll.setViewportView(flashcardView);
-			scroll.setPreferredSize(new Dimension(300,200));
-			scroll.revalidate();
-			
-			//Group of flashcard buttons
-			JCheckBox button;
-			
-			//List of flashcards to be removed
-			ArrayList <String> flashcardRemover = new ArrayList<>();
-									
-			//Fires when a user clicks a flashcard
-			ItemListener itemListener = new ItemListener() {
+		//Instruction for the user to follow
+		JLabel instruction = new JLabel("Edit your flashcard to submit");
+		instruction.setFont(new Font("Helvetica", Font.PLAIN, 12));
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5,0,0,0);
+		main.add(instruction,c);
 				
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					
-					//Gets the button
-					AbstractButton src = (AbstractButton) e.getSource();
-					
-					if(e.getStateChange() == ItemEvent.SELECTED) {
-						flashcardRemover.add(src.getText());
-					} else {
+		//Error message which is initialized to contain nothing
+		JLabel errMessage = new JLabel("");
+		errMessage.setForeground(Color.RED);
+		errMessage.setFont(new Font("Helvetica", Font.PLAIN, 11));
+		c.gridx = 0;
+		c.gridy = 2;
+		main.add(errMessage,c);
+		
+		//Form panel including labels, textfields, and buttons
+		JPanel form = new JPanel();
+		form.setLayout(new GridBagLayout());
+		
+		JLabel questionLabel = new JLabel("Question:");
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.insets = new Insets(0,0,0,0);
+		form.add(questionLabel,c);
+		
+		//Gets user to ask a question
+		JTextArea questionTextArea = new JTextArea();
+		questionTextArea.setText(oldQuestion);
+		questionTextArea.setLineWrap(true);
+		questionTextArea.setWrapStyleWord(true);
+		
+		//Applys scrollbar and adds question to the form
+		JScrollPane scroll_one = new JScrollPane(questionTextArea);
+		scroll_one.setPreferredSize(new Dimension(200,80));
+		c.gridx = 0;
+		c.gridy = 1;
+		form.add(scroll_one,c);
+		
+		JLabel answerLabel = new JLabel("Answer:");
+		c.gridx = 0;
+		c.gridy = 2;
+		c.insets = new Insets(5,0,0,0);
+		form.add(answerLabel,c);
+		
+		//Gets user to put an answer
+		JTextArea answerTextArea = new JTextArea();
+		answerTextArea.setText(oldAnswer);
+		answerTextArea.setLineWrap(true);
+		answerTextArea.setWrapStyleWord(true);
 
-						for(int i = 0; i < flashcardRemover.size(); i++) {
-							if(flashcardRemover.get(i) == src.getText()) {
-								flashcardRemover.remove(i);
-								break;
-							}
-						}
-					}
-				}				
-			};
-			
-			//Adds buttons in the scroll panel
-			for(int i = 0; i < flashcard_list.size(); i++) {
-				
-				button = new JCheckBox(flashcard_list.get(i).question);
-				button.addItemListener(itemListener);
-				flashcardView.add(button);
+		//Applys scrollbar and adds answer to the form
+		JScrollPane scroll_two = new JScrollPane(answerTextArea);
+		scroll_two.setPreferredSize(new Dimension(200,80));
+		c.gridx = 0;
+		c.gridy = 3;
+		c.insets = new Insets(0,0,0,0);
+		form.add(scroll_two,c);
+		
+		//Adds the form panel to the main
+		c.gridx = 0;
+		c.gridy = 3;
+		c.insets = new Insets(10,0,0,0);
+		c.anchor = GridBagConstraints.CENTER;
+		main.add(form,c);
+		
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new GridBagLayout());
+		
+		JButton back = new JButton("Back");
+		JButton submit = new JButton("Submit");
+		
+		ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource().equals(back)) {
+					ArrayList <Flashcard> temp = DatabaseHandler.getAllFlashcards(flashcardSet);
+					switchPanel(main, editFlashcardStepOne(flashcardSet, temp));
+				} else {	
+					
+					//Trims question and answer 
+					String newQuestion = questionTextArea.getText().trim();
+					String newAnswer = answerTextArea.getText().trim();
+							
+					if(DatabaseHandler.flashcardExists(newQuestion, flashcardSet) && !newQuestion.equals(oldQuestion)) {
+						errMessage.setText("Go back to flashcard selection to edit this flashcard.");
+					} else if(newQuestion.length() == 0 || newAnswer.length() == 0) {
+						errMessage.setText("You must provide a question and answer.");
+					} else if(newQuestion.equals(oldQuestion)  && newAnswer.equals(oldAnswer)) {
+						errMessage.setText("Either the question or the answer has to change.");
+					} else {
+						//System.out.println("Passed!");
+						DatabaseHandler.editFlashcard(oldQuestion, oldAnswer, newQuestion, newAnswer, flashcardSet);
+						switchPanel(main, successMessage(4, flashcardSet));
+					}			
+				}
 			}
 			
-			//Adds scroll panel to the main
-			c.gridx = 0;
-			c.gridy = 2;
-			c.anchor = GridBagConstraints.CENTER;
-			main.add(scroll,c);
-			
-			//Button panel for flashcard set and main menu
-			JPanel buttons_panel = new JPanel();
-			buttons_panel.setLayout(new GridBagLayout());
-			
-			JButton button1 = new JButton("Flashcard Set Selection"), button2 = new JButton("Main Menu"), button3 = new JButton("Submit");
-			
-			ActionListener actionListener = new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(e.getSource().equals(button1)) {
-						switchPanel(main,flashcardSetSelection(1));
-					} else if(e.getSource().equals(button2)) {
-						switchPanel(main, mainMenu());
-					} else {
-						
-						if(flashcardRemover.isEmpty()) {
-							err_message.setText("Select at least one flashcard to remove.");
-						} else {
-							
-							//Deletes all selected flashcards
-							for(int i = 0; i < flashcardRemover.size(); i++) {
-								DatabaseHandler.removeFlashCard(flashcardRemover.get(i), flashcardSet);
-							}
-							
-							switchPanel(main, successMessage(2, flashcardSet));
-						}
-					}
-				}
-				
-			};
-			
-			//Adds Submit button
-			button3.addActionListener(actionListener);
-			button3.setPreferredSize(new Dimension(200,30));
-			c.gridx = 0;
-			c.gridy = 0;
-			buttons_panel.add(button3,c);
-			
-			//Adds Flashcard Set Selection button
-			button1.addActionListener(actionListener);
-			button1.setPreferredSize(new Dimension(200,30));
-			c.gridx = 0;
-			c.gridy = 1;
-			c.insets = new Insets(5,0,0,0);
-			buttons_panel.add(button1,c);
-			
-			//Adds Main Menu button
-			button2.addActionListener(actionListener);
-			button2.setPreferredSize(new Dimension(200,30));
-			c.gridx = 0;
-			c.gridy = 2;
-			buttons_panel.add(button2,c);
-			
-			//Adds button panel to main
-			c.gridx = 0;
-			c.gridy = 3;
-			c.insets = new Insets(10,0,0,0);
-			main.add(buttons_panel,c);
-		}
+		};
 		
-		return main;
-	}
+		back.addActionListener(actionListener);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.CENTER;
+		buttons.add(back,c);
+		
+		submit.addActionListener(actionListener);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.insets = new Insets(10,30,0,0);
+		buttons.add(submit,c);
+		
+		//Adds buttons to main
+		c.gridx = 0;
+		c.gridy = 4;
+		c.insets = new Insets(10,0,0,0);
+		main.add(buttons,c);
 
-	@Override
-	public JPanel editFlashcard() {
-		return null;
-	}
+		return main;	}
 
 	/**
 	 * Displays a success message before the user can go back.
@@ -740,12 +1025,14 @@ public class App extends JFrame implements Menus{
 	 * 0: Flashcard Set is successfully added
 	 * 1: Flashcard Set is successfully deleted
 	 * 2: Flashcard is deleted from a flashcard set
+	 * 3: Flashcard is added to a flashcard set
+	 * 4: Flashcard is edited from a flashcard set
 	 */
 	@Override
-	public JPanel successMessage(int message_id, String flashcardSet) {
+	public JPanel successMessage(int key, String flashcardSet) {
 		
-		if(itemSelected != "")
-			itemSelected = "";
+		System.out.println("[Resetting itemSelected]");
+		itemSelected = "";
 
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -762,12 +1049,16 @@ public class App extends JFrame implements Menus{
 		JLabel suc_message = null;
 		
 		//Selects a message to display 
-		if(message_id == 0)
+		if(key == 0)
 			suc_message = new JLabel(flashcardSet + " is successfully added!");
-		else if(message_id == 1)
+		else if(key == 1)
 			suc_message = new JLabel(flashcardSet + " is successfully deleted!");
-		else
+		else if(key == 2)
 			suc_message = new JLabel("Your flashcard(s) are deleted from " + flashcardSet + "!");
+		else if(key == 3)
+			suc_message = new JLabel("Flashcard is added into " + flashcardSet + "!");
+		else
+			suc_message = new JLabel("Flashcard is edited from " + flashcardSet + "!");
 		
 		c.gridx = 0;
 		c.gridy = 1;
@@ -787,60 +1078,6 @@ public class App extends JFrame implements Menus{
 		c.insets = new Insets(20,0,0,0);
 		main.add(back,c);
 		
-		return main;
-	}
-	
-	/**
-	 * Same message method except that it only displays
-	 * a message informing to the user that the flashcard
-	 * is added to its corresponsding set.
-	 * 
-	 * 0: Flashcard is successfully added
-	 * 1: Flashcard is successfully deleted
-	 */
-	public JPanel successMessage(int key, String question, String flashcardSet) {
-				
-		JPanel main = new JPanel();
-		main.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		
-		//Restores itemSelected back to nothing 
-		if(itemSelected != "")
-			itemSelected = "";
-		
-		//Title
-		JLabel title = new JLabel("Success!");
-		title.setFont(new Font("Helvetica", Font.BOLD, 25));
-		title.setForeground(new Color(34,112,48));
-		c.gridx = 0;
-		c.gridy = 0;
-		main.add(title,c);
-		
-		//Message
-		JLabel message = null;
-		
-		//Displays different success messages 
-		if(key == 0) 
-			message = new JLabel("Flashcard is added into " + flashcardSet + "!");
-		else
-			message = new JLabel("Flashcard is deleted from " + flashcardSet + "!");
-		
-		c.gridx = 0;
-		c.gridy = 1;
-		c.insets = new Insets(10,0,0,0);
-		main.add(message,c);
-		
-		JButton back = new JButton("Back to Main Menu");
-		back.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				switchPanel(main, mainMenu());
-			}
-		});
-		c.gridx = 0;
-		c.gridy = 2;
-		main.add(back,c);
-
 		return main;
 	}
 
@@ -876,7 +1113,7 @@ public class App extends JFrame implements Menus{
 		c.insets = new Insets(5,0,0,0);
 		main.add(message_two,c);
 		
-		JButton button = new JButton("Return to Main Menu");
+		JButton button = new JButton("Main Menu");
 		c.gridx = 0;
 		c.gridy = 3;
 		c.insets = new Insets(15,0,0,0);
@@ -899,8 +1136,13 @@ public class App extends JFrame implements Menus{
 	 * 
 	 * 1: Go back to delete flashcard settings
 	 * 3: Go back to view flashcard settings
+	 * 4: Go back to edit flashcard settings
 	 */
 	public JPanel failMessage(int key, String flashcardSet) {
+		
+		//Restores itemSelected back to nothing
+		System.out.println("[Resetting itemSelected]");
+		itemSelected = "";
 
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -944,8 +1186,10 @@ public class App extends JFrame implements Menus{
 					
 					if(key == 1)
 						switchPanel(main,flashcardSetSelection(1));
-					else
+					else if(key == 3)
 						switchPanel(main,flashcardSetSelection(3));
+					else
+						switchPanel(main,flashcardSetSelection(4));
 
 				} else {
 					switchPanel(main,mainMenu());
@@ -980,9 +1224,20 @@ public class App extends JFrame implements Menus{
 	 * 1: Select a flashcard set to delete a flashcard
 	 * 2: Select a flashcard set to delete (Deleting flashcard set)
 	 * 3: Select a flashcard set to view flashcards
+	 * 4: Select a flashcard set to edit flashcard
 	 */
 	@Override
 	public JPanel flashcardSetSelection(int key) {
+		
+		/*
+		 * If a user clicks flashcard item(s) and 
+		 * returns back to flashcard set selection, 
+		 * reset it to nothing
+		 */
+		if(!itemSelected.equals("")) {
+			System.out.println("[Resetting itemSelected]");
+			itemSelected = "";
+		}
 		
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -1005,9 +1260,11 @@ public class App extends JFrame implements Menus{
 				instruction = new JLabel("Select a Flashcard Set to delete a flashcard");
 			else if(key == 2)
 				instruction = new JLabel("Select a Flashcard Set to delete");
-			else
+			else if(key == 3)
 				instruction = new JLabel("Select a Flashcard Set to view its flashcards");
-			
+			else
+				instruction = new JLabel("Select a Flashcard Set to edit a flashcard");
+
 			//Positions the instruction component
 			instruction.setFont(new Font("Helvetica", Font.BOLD,16));
 			c.gridx = 0;
@@ -1088,7 +1345,7 @@ public class App extends JFrame implements Menus{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					if(itemSelected == "") {
+					if(itemSelected.equals("")) {
 						err_message.setText("Please select a flashcard set before proceeding.");
 					} else {
 						
@@ -1102,12 +1359,13 @@ public class App extends JFrame implements Menus{
 							if(flashcard_list.isEmpty())
 								switchPanel(main,failMessage(1, itemSelected));
 							else
-								switchPanel(main,deleteFlashcard(itemSelected));
+								switchPanel(main,deleteFlashcard(itemSelected, flashcard_list));
 						}
 						else if(key == 2) {
 							DatabaseHandler.deleteFlashCardSet(itemSelected);
 							switchPanel(main,successMessage(1, itemSelected));
-						} else {
+						}
+						else if(key == 3){
 							
 							ArrayList <Flashcard> flashcard_list = DatabaseHandler.getAllFlashcards(itemSelected);
 							
@@ -1117,6 +1375,14 @@ public class App extends JFrame implements Menus{
 								flashcardHandler = new FlashcardHandler(itemSelected);
 								switchPanel(main, viewFlashcards());
 							}
+						} else {
+														
+							ArrayList <Flashcard> flashcard_list = DatabaseHandler.getAllFlashcards(itemSelected);
+							if(flashcard_list.isEmpty())
+								switchPanel(main,failMessage(4, itemSelected));
+							else
+								switchPanel(main,editFlashcardStepOne(itemSelected, flashcard_list));
+							
 						}
 					}
 				}
@@ -1133,7 +1399,6 @@ public class App extends JFrame implements Menus{
 			main.add(buttons_group,c);
 			return main;
 		}
-		
 	}
 
 	/**
@@ -1141,7 +1406,7 @@ public class App extends JFrame implements Menus{
 	 * to select one before returning to viewing flashcards
 	 */
 	@Override
-	public JPanel flashcardGlossary(ArrayList <Flashcard> flashcard_list) {
+	public JPanel flashcardGlossary() {
 		
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -1153,14 +1418,6 @@ public class App extends JFrame implements Menus{
 		c.gridx = 0;
 		c.gridy = 0;
 		main.add(instruction,c);
-		
-		//Adds Error Message
-		JLabel error_message = new JLabel("");
-		error_message.setFont(new Font("Helvetica", Font.PLAIN,12));
-		error_message.setForeground(Color.RED);
-		c.gridx = 0;
-		c.gridy = 1;
-		main.add(error_message,c);
 		
 		//Flashcards container, which will be inside the scroll panel
 		JPanel flashCards_View = new JPanel();
@@ -1191,16 +1448,21 @@ public class App extends JFrame implements Menus{
 		};
 		
 		//Adds buttons in the scroll panel
-		for(int i = 0; i < flashcard_list.size(); i++) {
-			button = new JRadioButton(flashcard_list.get(i).question);
+		for(int i = 0; i < flashcardHandler.getFlashcardSet().size(); i++) {
+			button = new JRadioButton(flashcardHandler.getFlashcardSet().get(i).question);
 			button.addItemListener(itemListener);
+			
+			//Selects the flashcard item that is currently used
+			if(flashcardHandler.getQuestion() == flashcardHandler.getFlashcardSet().get(i).question)
+				button.setSelected(true);
+			
 			flashCards_View.add(button);
 			button_list.add(button);
 		}
 		
 		//Adds scroll panel to the main
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(10,0,0,0);
 		main.add(scroll,c);
@@ -1219,16 +1481,19 @@ public class App extends JFrame implements Menus{
 				if(e.getSource().equals(back)) {
 					switchPanel(main, viewFlashcards());
 				} else {
-					
-					if(itemSelected == "")
-						error_message.setText("Please select a flashcard set before proceeding.");
-					else {
 						
-						//Code this
+					int index = 0;
 						
-						switchPanel(main, viewFlashcards());
+					//Searches through questions to get the corresponding index
+					for(Flashcard flashcard: flashcardHandler.getFlashcardSet()) {
+						if(itemSelected.equals(flashcard.question)) {
+							break;
+						}
+						index++;
 					}
 					
+					flashcardHandler.changeFlashcard(index);
+					switchPanel(main, viewFlashcards());
 				}
 			}
 			
@@ -1247,7 +1512,7 @@ public class App extends JFrame implements Menus{
 		
 		//Adds button group panel to the main
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 2;
 		c.insets = new Insets(10,50,0,0);
 		main.add(buttons_group,c);
 		

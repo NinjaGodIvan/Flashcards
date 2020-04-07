@@ -2,13 +2,11 @@ package main;
 import java.sql.*;
 import java.util.*;
 
+/********************************************
+ * Database API which allows Java Eclipse   *
+ * to manipulate MySQL Flashcard data.      *
+ ********************************************/
 
-/***
- * Database API which allows Java Eclipse
- * to manipulate MySQL Flashcard data.
- * @author ninjagodivan
- *
- */
 public class DatabaseHandler {
 	
 	/**
@@ -83,6 +81,39 @@ public class DatabaseHandler {
 	}
 	
 	/**
+	 * Updates the question, answer, or both.
+	 * @param question
+	 * @param answer
+	 * @param flashcardSet
+	 */
+	public static void editFlashcard(String oldQuestion, String oldAnswer, String newQuestion, String newAnswer, String flashcardSet) {
+		
+		try {
+			
+			Connection connect = getConnection();
+			PreparedStatement edit;
+			
+			if(!oldQuestion.equals(newQuestion) && oldAnswer.equals(newAnswer)) {
+				edit = connect.prepareStatement("UPDATE `[" + flashcardSet + "]` SET question = '" + newQuestion + "' WHERE question = '" + oldQuestion + "';");
+				System.out.println("\nYou have changed the question!");
+			}
+			else if(oldQuestion.equals(newQuestion) && !oldAnswer.equals(newAnswer)) {
+				edit = connect.prepareStatement("UPDATE `[" + flashcardSet + "]` SET answer = '" + newAnswer + "' WHERE question = '" + oldQuestion + "';");
+				System.out.println("\nYou have changed the answer!");
+			}
+			else {
+				edit = connect.prepareStatement("UPDATE `[" + flashcardSet + "]` SET question = '" + newQuestion + "', answer = '" + newAnswer + "' WHERE question = '" + oldQuestion + "';");
+				System.out.println("\nYou have changed the question and the answer!");
+			}
+			edit.executeUpdate();
+
+			System.out.println("editFlashcard success!!");
+		}catch(Exception e) {
+			System.out.println("\neditFlashcard failed\n" + e);
+		}
+	}
+	
+	/**
 	 * Removes a flashcard from a specified flashcard set
 	 * @param question
 	 * @param flashcardSet
@@ -123,11 +154,41 @@ public class DatabaseHandler {
 				flashcardSets.add(new_string.trim());
 			}
 			System.out.println("getAllFlashCardSets function success!!");
+			return flashcardSets;
+
 		}catch(Exception e) {
 			System.out.println("\ngetAllFlashCardSets failed:\n" + e);
 		}
 		
-		return flashcardSets;
+		return null;
+	}
+	
+	/**
+	 * Gets one of the flashcards from a specified flashcard set.
+	 * This is only used when a user wants to edit a flashcard.
+	 * @param flashcardSet
+	 * @param question
+	 */
+	public static Flashcard getFlashcard(String flashcardSet, String question) {
+		
+		//Temporary flashcard
+		Flashcard temp = new Flashcard();
+		
+		try {
+			
+			Connection connect = getConnection();
+			PreparedStatement get = connect.prepareStatement("SELECT question, answer FROM `[" + flashcardSet + "]` WHERE question = '" + question + "';");
+			ResultSet res = get.executeQuery();
+			res.next();
+			temp.question = res.getString(1);
+			temp.answer = res.getString(2);
+			System.out.println("getFlashcard function success!!");
+			return temp;
+		} catch (Exception e){
+			System.out.println("\ngetFlashcard failed:\n" + e);
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -152,12 +213,12 @@ public class DatabaseHandler {
 				flashcard_list.add(flashcard);
 			}
 			System.out.println("getAllFlashcards function success!!");
+			return flashcard_list;
 		} catch(Exception e) {
 			System.out.println("\ngetAllFlashcards failed:\n" + e);
 		}
 		
-		
-		return flashcard_list;
+		return null;
 	}
 	
 	/**
