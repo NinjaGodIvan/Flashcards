@@ -37,6 +37,11 @@ public class App extends JFrame implements Menus{
 	private static final long serialVersionUID = 1L;
 	//Item that is currently being selected (Should be initialized to have no characters)
 	private static String itemSelected = "";
+	
+	//[See in editFlashcardStepTwo() method]
+	private static String oldQuestion = "";
+	private static String oldAnswer = "";
+	
 	//FlashcardHandler
 	private FlashcardHandler flashcardHandler;
 	
@@ -51,6 +56,7 @@ public class App extends JFrame implements Menus{
 		setTitle("Flashcards");
 		setSize(400,400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		setVisible(true);		
 	}
 	
@@ -251,14 +257,14 @@ public class App extends JFrame implements Menus{
 				
 					//Will need to surround the flashcard set with brackets for searching
 					if(DatabaseHandler.flashcardSetExists("[" +flashcardSetName.getText().trim() + "]")) {
-						errMessage.setText("This flashcard set already exists!");
+						errMessage.setText("This flashcard set has already existed.");
 					}else if(flashcardSetName.getText().toCharArray().length < 1) {
-						errMessage.setText("Flashcard set name needs at least 1 character!");
+						errMessage.setText("Flashcard set name needs at least one character.");
 					}else {
 						//Will need to trim the string to get rid of trailing spaces that the user added
 						DatabaseHandler.addFlashCardSet(flashcardSetName.getText().trim());
 						switchPanel(main, successMessage(0, flashcardSetName.getText().trim()));
-					}
+					}					
 				}catch(Exception ex) {
 					System.out.println(ex);
 				}
@@ -288,6 +294,9 @@ public class App extends JFrame implements Menus{
 		System.out.println("[Resetting itemSelected]");
 		itemSelected = "";
 		
+		//Colorizes message if the message is successful
+		Color green = new Color(34,112,48);
+		
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -307,12 +316,12 @@ public class App extends JFrame implements Menus{
 		main.add(instruction,c);
 				
 		//Error message which is initialized to contain nothing
-		JLabel errMessage = new JLabel("");
-		errMessage.setForeground(Color.RED);
-		errMessage.setFont(new Font("Helvetica", Font.PLAIN, 11));
+		JLabel message = new JLabel("");
+		message.setForeground(Color.RED);
+		message.setFont(new Font("Helvetica", Font.PLAIN, 11));
 		c.gridx = 0;
 		c.gridy = 2;
-		main.add(errMessage,c);
+		main.add(message,c);
 		
 		//Form panel including labels, textfields, and buttons
 		JPanel form = new JPanel();
@@ -379,12 +388,33 @@ public class App extends JFrame implements Menus{
 					try {
 						
 						if(DatabaseHandler.flashcardExists(question.getText().trim(), flashcardSet)) {
-							errMessage.setText("This flashcard has already exists in this set.");
+							
+							//Changes the text to red if it's a different color
+							if(message.getForeground() != Color.RED)
+								message.setForeground(Color.RED);
+							
+							message.setText("This flashcard has already exists in this set.");
+							
 						} else if (question.getText().trim().length() == 0 || answer.getText().trim().length() == 0) {
-							errMessage.setText("You must provide a question and answer.");
+							if(message.getForeground() != Color.RED)
+								message.setForeground(Color.RED);
+							
+							message.setText("You must provide a question and answer.");
 						} else {
 							DatabaseHandler.addFlashCard(question.getText().trim(), answer.getText().trim(), flashcardSet);
-							switchPanel(main,successMessage(3,flashcardSet));
+							
+							//Displays a successful message
+							message.setText("Flashcard added successfully!");
+							
+							//Changes the text to green if it's a different color
+							if(message.getForeground() != green)
+								message.setForeground(green);
+							
+							//Resets question and answer
+							question.setText("");
+							answer.setText("");
+							
+							//switchPanel(main,successMessage(3,flashcardSet));
 						}
 			
 					}catch(Exception ex) {
@@ -825,7 +855,7 @@ public class App extends JFrame implements Menus{
 		buttons_panel.setLayout(new GridBagLayout());
 		
 		//List of buttons from buttons_panel
-		JButton button1 = new JButton("My Sets"), button2 = new JButton("Main Menu"), button3 = new JButton("Submit");
+		JButton button1 = new JButton("My Sets"), button2 = new JButton("Main Menu"), button3 = new JButton("Next");
 		
 		ActionListener actionListener = new ActionListener() {
 
@@ -881,11 +911,21 @@ public class App extends JFrame implements Menus{
 	/**
 	 * Edit Flashcard Step Two: Have user edit the flashcard
 	 */
-	public JPanel editFlashcardStepTwo(String flashcardSet, String oldQuestion, String oldAnswer) {
+	public JPanel editFlashcardStepTwo(String flashcardSet, String gotOldQuestion, String gotOldAnswer) {
 		
 		//Restores itemSelected back to nothing
 		System.out.println("[Resetting itemSelected]");
 		itemSelected = "";
+		
+		//Colorizes message if the message is successful
+		Color green = new Color(34,112,48);
+		
+		/*
+		 * Duplicating old question and answer (passed parameter) 
+		 * This is to change reference an updated of both fields
+		 */
+		oldQuestion = gotOldQuestion;
+		oldAnswer = gotOldAnswer;
 		
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -905,13 +945,13 @@ public class App extends JFrame implements Menus{
 		c.insets = new Insets(5,0,0,0);
 		main.add(instruction,c);
 				
-		//Error message which is initialized to contain nothing
-		JLabel errMessage = new JLabel("");
-		errMessage.setForeground(Color.RED);
-		errMessage.setFont(new Font("Helvetica", Font.PLAIN, 11));
+		//Success or fail message
+		JLabel message = new JLabel("");
+		message.setForeground(Color.RED);
+		message.setFont(new Font("Helvetica", Font.PLAIN, 11));
 		c.gridx = 0;
 		c.gridy = 2;
-		main.add(errMessage,c);
+		main.add(message,c);
 		
 		//Form panel including labels, textfields, and buttons
 		JPanel form = new JPanel();
@@ -975,6 +1015,19 @@ public class App extends JFrame implements Menus{
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource().equals(back)) {
 					ArrayList <Flashcard> temp = DatabaseHandler.getAllFlashcards(flashcardSet);
+					
+					//Resets Old Question
+					if(!oldQuestion.equals("")) {
+						System.out.println("[Resetting oldQuestion]");
+						oldQuestion = "";
+					}
+					
+					//Resets Old Question
+					if(!oldAnswer.equals("")) {
+						System.out.println("[Resetting oldAnswer]");
+						oldAnswer = "";
+					}
+					
 					switchPanel(main, editFlashcardStepOne(flashcardSet, temp));
 				} else {	
 					
@@ -983,15 +1036,47 @@ public class App extends JFrame implements Menus{
 					String newAnswer = answerTextArea.getText().trim();
 							
 					if(DatabaseHandler.flashcardExists(newQuestion, flashcardSet) && !newQuestion.equals(oldQuestion)) {
-						errMessage.setText("Go back to flashcard selection to edit this flashcard.");
+						
+						//Changes the text to red if it's a different color
+						if(message.getForeground() != Color.RED)
+							message.setForeground(Color.RED);
+						
+						message.setText("Go back to flashcard selection to edit this flashcard.");
 					} else if(newQuestion.length() == 0 || newAnswer.length() == 0) {
-						errMessage.setText("You must provide a question and answer.");
+						
+						if(message.getForeground() != Color.RED)
+							message.setForeground(Color.RED);
+						
+						message.setText("You must provide a question and answer.");
 					} else if(newQuestion.equals(oldQuestion)  && newAnswer.equals(oldAnswer)) {
-						errMessage.setText("Either the question or the answer has to change.");
+						
+						if(message.getForeground() != Color.RED)
+							message.setForeground(Color.RED);
+						
+						message.setText("Either the question or the answer has to change.");
 					} else {
-						//System.out.println("Passed!");
 						DatabaseHandler.editFlashcard(oldQuestion, oldAnswer, newQuestion, newAnswer, flashcardSet);
-						switchPanel(main, successMessage(4, flashcardSet));
+						
+						//Updates oldQuestion if the user changed the question
+						if(!newQuestion.equals(oldQuestion)) {
+							System.out.println("Old Question: " + oldQuestion);
+							oldQuestion = newQuestion;
+							System.out.println("New Question: " + oldQuestion);
+						}
+						
+						//Updates oldAnswer if the user changed the answer
+						if(!newAnswer.equals(oldAnswer)) {
+							System.out.println("Old Answer: " + oldAnswer);
+							oldAnswer = newAnswer;
+							System.out.println("New Answer: " + oldAnswer);
+						}
+						
+						//Displays a successful message
+						message.setText("Flashcard edited successfully!");
+						
+						//Changes the text to green if it's a different color
+						if(message.getForeground() != green)
+							message.setForeground(green);
 					}			
 				}
 			}
@@ -1025,8 +1110,6 @@ public class App extends JFrame implements Menus{
 	 * 0: Flashcard Set is successfully added
 	 * 1: Flashcard Set is successfully deleted
 	 * 2: Flashcard is deleted from a flashcard set
-	 * 3: Flashcard is added to a flashcard set
-	 * 4: Flashcard is edited from a flashcard set
 	 */
 	@Override
 	public JPanel successMessage(int key, String flashcardSet) {
@@ -1053,12 +1136,8 @@ public class App extends JFrame implements Menus{
 			suc_message = new JLabel(flashcardSet + " is successfully added!");
 		else if(key == 1)
 			suc_message = new JLabel(flashcardSet + " is successfully deleted!");
-		else if(key == 2)
-			suc_message = new JLabel("Your flashcard(s) are deleted from " + flashcardSet + "!");
-		else if(key == 3)
-			suc_message = new JLabel("Flashcard is added into " + flashcardSet + "!");
 		else
-			suc_message = new JLabel("Flashcard is edited from " + flashcardSet + "!");
+			suc_message = new JLabel("Your flashcard(s) are deleted from " + flashcardSet + "!");
 		
 		c.gridx = 0;
 		c.gridy = 1;
@@ -1066,7 +1145,7 @@ public class App extends JFrame implements Menus{
 		main.add(suc_message,c);
 		
 		//Back Button
-		JButton back = new JButton("Return to Main Menu");
+		JButton back = new JButton("Main Menu");
 		back.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1339,7 +1418,13 @@ public class App extends JFrame implements Menus{
 			c.insets = new Insets(10,0,0,50);
 			buttons_group.add(back,c);
 			
-			JButton submit = new JButton("Submit");
+			JButton submit;
+			
+			if(key == 0 || key == 1 || key == 4)
+				submit = new JButton("Next");
+			else
+				submit = new JButton("Submit");
+			
 			submit.addActionListener(new ActionListener() {
 
 				@Override
