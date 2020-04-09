@@ -25,3 +25,8 @@ Flashcards is a Java application where you can customize your own flashcards and
 1. All questions of the flashcards are **UNIQUE**. Any question that already exists in the data is invalid. This prevents multiple duplications of deleting flashcards. If you enter a question that already exists, then you will be prompt to reenter the question. Making the same question but with different amount of non-leading or non-trailing spaces is also invalid.
 
 2. Every flashcard **MUST** include a question and an answer, or it's considered invalid. Both question and the answer needs at least one character.
+
+3. Make sure that the user and your password is correct when connecting to MySQL server.
+
+4. On the console log from any IDE or terminal, if it displays a MySQL error because of an undefined timezone or any similar, then execute this MySQL command -> **SET GLOBAL time_zone = -07:00**. Note that this time deduction associates with PDT. You can choose any timezone.
+
