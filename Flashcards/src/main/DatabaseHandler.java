@@ -236,9 +236,6 @@ public class DatabaseHandler {
 	 * @return
 	 */
 	public static boolean flashcardSetExists(String flashcardSet) {
-		
-		/*System.out.println("Old String: " + flashcardSet);
-		System.out.println("New String: " + escapeCharacters(flashcardSet));*/
 				
 		try {
 			
@@ -298,11 +295,11 @@ public class DatabaseHandler {
 	}
 	
 	/**
-	 * Adds backslashes before the escaping characters such
-	 * as ' and ". This is to prevent MySQL syntax errors
+	 * Adds backslashes before the escaping characters.
+	 * This is to prevent MySQL syntax errors
 	 * from happening. Returns the updated string.
 	 * 
-	 * Escaping characters: single quote and backslash
+	 * MySQL escaping characters: single quote and backslash
 	 * @param new_string
 	 * @return
 	 */

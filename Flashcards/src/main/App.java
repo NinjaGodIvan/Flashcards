@@ -8,7 +8,7 @@ import javax.swing.*;
  * The App is responsible for setting up *
  * graphical interfaces for the users to *
  * view									*
- ****************************************/
+ *****************************************/
 
 /**
  * Interface that consists all menus
@@ -23,7 +23,7 @@ interface Menus {
 	JPanel viewFlashcards();
 	JPanel deleteFlashcard(String flashcardSet, ArrayList <Flashcard> flashcard_list);
 	JPanel editFlashcardStepOne(String flashcardSet, ArrayList <Flashcard> flashcard_list);
-	JPanel editFlashcardStepTwo(String flashcardSet, String oldQuestion, String oldAnswer);
+	JPanel editFlashcardStepTwo(String flashcardSet, String gotOldQuestion, String gotOldAnswer);
 	JPanel successMessage(int key, String flashcardSet);
 	JPanel failMessage();
 	JPanel failMessage(int key, String flashcardSet);
@@ -35,6 +35,7 @@ public class App extends JFrame implements Menus{
 	
 	//Serial Version
 	private static final long serialVersionUID = 1L;
+	
 	//Item that is currently being selected (Should be initialized to have no characters)
 	private static String itemSelected = "";
 	
@@ -52,11 +53,11 @@ public class App extends JFrame implements Menus{
 		
 		//NOTE: When app starts, you can initially start up any GUI for debugging purposes
 		add(mainMenu());
-		
 		setTitle("Flashcards");
 		setSize(400,400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
+		setContentPane(mainMenu());
 		setVisible(true);		
 	}
 	
@@ -68,8 +69,9 @@ public class App extends JFrame implements Menus{
 	public void switchPanel(JPanel oldPanel, JPanel newPanel) {
 		oldPanel.removeAll();
 		add(newPanel);
-		newPanel.repaint();
+		setContentPane(newPanel);
 		newPanel.revalidate();
+		newPanel.repaint();
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class App extends JFrame implements Menus{
 		//Adds button panel to main
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(20,0,0,0);
+		c.insets = new Insets(10,0,0,0);
 		main.add(buttons,c);
 				
 		return main;
@@ -212,15 +214,15 @@ public class App extends JFrame implements Menus{
 		c.insets = new Insets(10,0,0,0);
 		main.add(instruction,c);
 		
-		//Error message which is initialized to contain nothing
-		JLabel errMessage = new JLabel("");
-		errMessage.setForeground(Color.RED);
-		errMessage.setFont(new Font("Helvetica", Font.PLAIN, 11));
+		//Success or fail message
+		JLabel message = new JLabel("");
+		message.setForeground(Color.RED);
+		message.setFont(new Font("Helvetica", Font.PLAIN, 11));
 		c.gridx = 0;
 		c.gridy = 2;
 		c.insets = new Insets(10,4,0,0);
 		c.anchor = GridBagConstraints.WEST;
-		main.add(errMessage,c);
+		main.add(message,c);
 				
 		//Field where a user enters the name of the flashcard set
 		JTextField flashcardSetName = new JTextField();
@@ -257,9 +259,9 @@ public class App extends JFrame implements Menus{
 				
 					//Will need to surround the flashcard set with brackets for searching
 					if(DatabaseHandler.flashcardSetExists("[" +flashcardSetName.getText().trim() + "]")) {
-						errMessage.setText("This flashcard set has already existed.");
+						message.setText("This flashcard set has already existed.");
 					}else if(flashcardSetName.getText().toCharArray().length < 1) {
-						errMessage.setText("Flashcard set name needs at least one character.");
+						message.setText("Flashcard set name needs at least one character.");
 					}else {
 						//Will need to trim the string to get rid of trailing spaces that the user added
 						DatabaseHandler.addFlashCardSet(flashcardSetName.getText().trim());
@@ -315,7 +317,7 @@ public class App extends JFrame implements Menus{
 		c.insets = new Insets(5,0,0,0);
 		main.add(instruction,c);
 				
-		//Error message which is initialized to contain nothing
+		//Success or fail message
 		JLabel message = new JLabel("");
 		message.setForeground(Color.RED);
 		message.setFont(new Font("Helvetica", Font.PLAIN, 11));

@@ -52,6 +52,7 @@ public class FlashcardHandler {
 		flashcardIndicator = 0;
 		this.flashcardSet = flashcardSet;
 		flashcard_list = DatabaseHandler.getAllFlashcards(flashcardSet);
+		System.out.println("Current flashcard position at: " + flashcardTracker);
 	}
 	
 	/**
