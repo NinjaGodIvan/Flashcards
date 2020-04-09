@@ -6,7 +6,7 @@ Are you tired of having to write down your own flashcards? Are you cutting your 
 
 Flashcards is a Java application where you can customize your own flashcards and their sets. You can use this app without having to write down any flashcards if your hands are too tired of writing words with a pencil. Save money and download this app for **FREE**!
 
-##### HERE ARE FEATURES THAT YOU CAN EXPECT FROM THIS APP:
+#### HERE ARE FEATURES THAT YOU CAN EXPECT FROM THIS APP:
 
 **1. Create a flashcard set**: You can start by adding a flashcard set to add any flashcards.
 
@@ -20,7 +20,7 @@ Flashcards is a Java application where you can customize your own flashcards and
 
 **6. View flashcards**: This is where you can view your own flashcards. After selecting a flashcard set to view your flashcards, the flashcard maker will be constructing every flashcards from the set. You can press "Previous" or "Next" to go through the flashcards. It also features a glossary where you can go to any flashcard within an instant!
 
-##### INFORMATION YOU NEED TO KNOW:
+#### INFORMATION YOU NEED TO KNOW:
 
 1. All questions of the flashcards are **UNIQUE**. Any question that already exists in the data is invalid. This prevents multiple duplications of deleting flashcards. If you enter a question that already exists, then you will be prompt to reenter the question. Making the same question but with different amount of non-leading or non-trailing spaces is also invalid.
 
