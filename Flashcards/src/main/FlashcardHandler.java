@@ -232,7 +232,6 @@ public class FlashcardHandler {
 						 */
 						if(index > -1) {
 							_substring = description.substring(i, (i + char_limit) - (decrementor + 1));
-							//_substring = description.substring(i, (i + char_limit) - decrementor);
 							hasMovedtoNextLine = true;
 						}
 					}

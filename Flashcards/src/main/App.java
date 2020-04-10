@@ -414,9 +414,7 @@ public class App extends JFrame implements Menus{
 							
 							//Resets question and answer
 							question.setText("");
-							answer.setText("");
-							
-							//switchPanel(main,successMessage(3,flashcardSet));
+							answer.setText("");	
 						}
 			
 					}catch(Exception ex) {
