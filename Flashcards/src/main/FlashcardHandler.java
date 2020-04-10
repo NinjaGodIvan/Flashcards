@@ -213,8 +213,7 @@ public class FlashcardHandler {
 				 * 
 				 */
 				if(description.charAt(i + (char_limit - 1)) != ' ' && description.charAt(i + char_limit) != ' ') {
-					
-					
+								
 					//Gets the last index of the substring
 					int index = char_limit - 1;
 					
@@ -236,8 +235,7 @@ public class FlashcardHandler {
 						_substring = description.substring(i, (i + char_limit) - (decrementor + 1));
 						hasMovedtoNextLine = true;
 					}
-				}
-				
+				}		
 			}
 			else
 				_substring = description.substring(i, descriptionSize);
