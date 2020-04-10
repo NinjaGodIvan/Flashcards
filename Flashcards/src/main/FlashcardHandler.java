@@ -161,6 +161,7 @@ public class FlashcardHandler {
 		flashcard_view.setBackground(Color.WHITE);
 		GridBagConstraints c = new GridBagConstraints();
 		
+		//Question or Answer
 		String description;
 				
 		//Gets either the question or answer of the flashcard
@@ -175,11 +176,7 @@ public class FlashcardHandler {
 		//Amount of characters per line
 		int char_limit = 30;
 		
-		/*
-		 * If the amount of characters of question or answer exceeds more than
-		 * the character limit, then split the question/answer into substrings. 
-		 */
-		//if(descriptionSize > char_limit) {
+		//Adds 1-to-30-character text per line in the flashcard
 		for(int i = 0, j = 0; i < descriptionSize; i += char_limit, j++) {
 							
 			//Label that will be added in the flashcard
@@ -196,6 +193,11 @@ public class FlashcardHandler {
 			 */
 			int decrementor = 0;
 			
+			/*
+			 * If there are more than 30 characters in the description, then
+			 * split the description in the substring. The final iteration
+			 * executes the else-block.
+			 */
 			if(i + char_limit < descriptionSize) {
 										
 				//Takes 30 consecutive letters from the description
@@ -250,14 +252,6 @@ public class FlashcardHandler {
 			if(hasMovedtoNextLine) 
 				i -= decrementor;
 		}
-		/*} else {
-			JLabel descriptionText = new JLabel(description);
-			descriptionText.setFont(new Font("Helvetica", Font.PLAIN, 14));
-			c.gridx = 0;
-			c.gridy = 0;
-			flashcard_view.add(descriptionText, c);
-		}*/
-
 			
 		return flashcard_view;
 	}
