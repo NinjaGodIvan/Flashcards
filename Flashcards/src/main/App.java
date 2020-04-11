@@ -101,11 +101,6 @@ public class App extends JFrame implements Menus{
 		c.gridy = 0;
 		main.add(title,c);
 		
-		//Flashcard Image
-		
-		
-		
-		
 		//Group of buttons
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridBagLayout());
@@ -185,7 +180,7 @@ public class App extends JFrame implements Menus{
 		
 		//Adds button panel to main
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 1;
 		c.insets = new Insets(10,0,0,0);
 		main.add(buttons,c);
 				
