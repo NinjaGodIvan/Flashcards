@@ -20,7 +20,7 @@ Flashcards is a Java application where you can customize your own flashcards and
 
 6. **View flashcards**: This is where you can view your own flashcards. After selecting a flashcard set to view your flashcards, the flashcard maker will be constructing every flashcards from the set. You can press "Previous" or "Next" to go through the flashcards. It also features a glossary where you can go to any flashcard within an instant!
 
-#### INFORMATION YOU NEED TO KNOW:
+#### FLASHCARDS APP INFO:
 
 1. All questions from the flashcards are **UNIQUE**. Any question that already exists in the data is invalid. This prevents multiple duplications of deleting flashcards. If you enter a question that already exists, then you will be prompt to reenter the question. Making the same question but with different amount of non-leading or non-trailing spaces is also invalid.
 
@@ -32,7 +32,7 @@ Flashcards is a Java application where you can customize your own flashcards and
 
 1. Make sure that the user and your password is correct when connecting to MySQL server. Otherwise, it will throw an error and you can't access your flashcard sets.
 
-2. On the console log from any IDE or terminal, if it displays a MySQL error because of an undefined timezone or any similar, then run this MySQL command => **SET GLOBAL time_zone = '-07:00'**. Note that this time deduction associates with PDT. You can choose any time.
+2. On the console log from any IDE or terminal, if it displays this following error: **The server time zone value 'time_zone_value' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support**, run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**.
 
 3. You can download MySQL Workbench to also keep track of flashcard sets (tables) and their flashcards (rows). It is much more convenient that running in the terminal or command prompt. 
 

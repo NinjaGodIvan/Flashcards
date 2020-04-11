@@ -1,6 +1,7 @@
 package main;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.*;
 import javax.swing.*;
 
@@ -94,12 +95,27 @@ public class App extends JFrame implements Menus{
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		//Flashcard Image
+		try {
+			URL url = this.getClass().getResource("/flashcards.png");
+			ImageIcon flashcard_icon = new ImageIcon(url);
+			JLabel flashcard_image = new JLabel("");
+			flashcard_image.setIcon(flashcard_icon);
+			c.gridx = 0;
+			c.gridy = 0;
+			main.add(flashcard_image,c);
+		}catch(Exception e) {
+			System.out.println(e);			
+		}
+	
 		//Title of the app
 		JLabel title = new JLabel("Flashcards");
 		title.setFont(new Font("Helvetica", Font.BOLD,18));
+		c.insets = new Insets(10,0,0,0);
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = 1;
 		main.add(title,c);
+		
 		
 		//Group of buttons
 		JPanel buttons = new JPanel();
@@ -180,8 +196,7 @@ public class App extends JFrame implements Menus{
 		
 		//Adds button panel to main
 		c.gridx = 0;
-		c.gridy = 1;
-		c.insets = new Insets(10,0,0,0);
+		c.gridy = 2;
 		main.add(buttons,c);
 				
 		return main;
@@ -1121,12 +1136,26 @@ public class App extends JFrame implements Menus{
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		//Green Check Image
+		try {
+			URL url = this.getClass().getResource("/greencheck.png");
+			ImageIcon checkmark_icon = new ImageIcon(url);
+			JLabel checkmark_image = new JLabel("");
+			checkmark_image.setIcon(checkmark_icon);
+			c.gridx = 0;
+			c.gridy = 0;
+			main.add(checkmark_image,c);
+		}catch(Exception e) {
+			System.out.println(e);			
+		}
+		
 		//Title
 		JLabel title = new JLabel("Success!");
 		title.setFont(new Font("Helvetica", Font.BOLD, 25));
 		title.setForeground(new Color(34,112,48));
+		c.insets = new Insets(20,0,0,0);
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = 1;
 		main.add(title,c);
 		
 		JLabel suc_message = null;
@@ -1140,8 +1169,8 @@ public class App extends JFrame implements Menus{
 			suc_message = new JLabel("Your flashcard(s) are deleted from " + flashcardSet + "!");
 		
 		c.gridx = 0;
-		c.gridy = 1;
-		c.insets = new Insets(5,0,0,0);
+		c.gridy = 2;
+		c.insets = new Insets(10,0,0,0);
 		main.add(suc_message,c);
 		
 		//Back Button
@@ -1153,7 +1182,7 @@ public class App extends JFrame implements Menus{
 			}
 		});
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.insets = new Insets(20,0,0,0);
 		main.add(back,c);
 		
@@ -1171,31 +1200,43 @@ public class App extends JFrame implements Menus{
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		//Red X Image
+		try {
+			URL url = this.getClass().getResource("/red-X.png");
+			ImageIcon red_X_icon = new ImageIcon(url);
+			JLabel red_X_image = new JLabel("");
+			red_X_image.setIcon(red_X_icon);
+			c.gridx = 0;
+			c.gridy = 0;
+			main.add(red_X_image,c);
+		}catch(Exception e) {
+			System.out.println(e);			
+		}
+		
 		JLabel title = new JLabel("Error!");
 		title.setFont(new Font("Helvetica", Font.BOLD,25));
 		title.setForeground(Color.RED);
 		c.gridx = 0;
-		c.gridy = 0;
-		c.insets = new Insets(10,0,0,0);
+		c.gridy = 1;
+		c.insets = new Insets(20,0,0,0);
 		main.add(title,c);
 		
 		JLabel message_one = new JLabel("You did not create any flashcard sets.");
-		message_one.setFont(new Font("Helvetica", Font.BOLD, 15));
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 2;
+		c.insets = new Insets(10,0,0,0);
 		main.add(message_one, c);
 		
 		JLabel message_two = new JLabel("Go back and make one.");
-		message_two.setFont(new Font("Helvetica", Font.BOLD, 15));
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.insets = new Insets(5,0,0,0);
 		main.add(message_two,c);
 		
 		JButton button = new JButton("Main Menu");
 		c.gridx = 0;
-		c.gridy = 3;
-		c.insets = new Insets(15,0,0,0);
+		c.gridy = 4;
+		c.insets = new Insets(20,0,0,0);
 		button.addActionListener(new ActionListener() {
 
 			@Override
@@ -1227,25 +1268,37 @@ public class App extends JFrame implements Menus{
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		//Red X Image
+		try {
+			URL url = this.getClass().getResource("/red-X.png");
+			ImageIcon red_X_icon = new ImageIcon(url);
+			JLabel red_X_image = new JLabel("");
+			red_X_image.setIcon(red_X_icon);
+			c.gridx = 0;
+			c.gridy = 0;
+			main.add(red_X_image,c);
+		}catch(Exception e) {
+			System.out.println(e);			
+		}
+		
 		//Title
 		JLabel title = new JLabel("Error!");
 		title.setFont(new Font("Helvetica", Font.BOLD,25));
 		title.setForeground(Color.RED);
+		c.insets = new Insets(20,0,0,0);
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = 1;
 		main.add(title,c);
 		
 		JLabel message_one = new JLabel("There are no flashcards in " + flashcardSet + " set.");
-		message_one.setFont(new Font("Helvetica", Font.BOLD, 15));
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 2;
 		c.insets = new Insets(10,0,0,0);
 		main.add(message_one, c);
 		
 		JLabel message_two = new JLabel("Go back and make one.");
-		message_two.setFont(new Font("Helvetica", Font.BOLD, 15));
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.insets = new Insets(5,0,0,0);
 		main.add(message_two,c);
 		
@@ -1290,7 +1343,8 @@ public class App extends JFrame implements Menus{
 		
 		//Adds buttons panel to main
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
+		c.insets = new Insets(20,0,0,0);
 		main.add(buttons,c); 
 		
 		return main;
@@ -1321,7 +1375,7 @@ public class App extends JFrame implements Menus{
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		
+				
 		//Get all flashcard sets
 		ArrayList<String> flashcard_sets = DatabaseHandler.getAllFlashCardSets();
 		
