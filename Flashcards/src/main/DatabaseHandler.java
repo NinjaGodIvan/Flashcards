@@ -9,7 +9,7 @@ import java.util.*;
 
 public class DatabaseHandler {
 	
-	/**
+	/***
 	 * Connects to MySQL server. You will
 	 * need to enter your username and
 	 * password. 

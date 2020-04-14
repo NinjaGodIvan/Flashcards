@@ -87,7 +87,7 @@ public class FlashcardHandler {
 		System.out.println("Current flashcard position at: " + flashcardTracker);
 	}
 	
-	/***
+	/**
 	 * Changes the flashcard
 	 */
 	public void changeFlashcard(int flashcardTracker) {

@@ -11,7 +11,7 @@ import javax.swing.*;
  * view									*
  *****************************************/
 
-/***
+/**
  * Interface that consists all menus
  * of the application.
  * @author ninjagodivan
