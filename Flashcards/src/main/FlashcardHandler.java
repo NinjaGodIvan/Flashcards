@@ -47,11 +47,11 @@ public class FlashcardHandler {
 	 * set that the user selected
 	 * @param flashcardSet
 	 */
-	public FlashcardHandler(String flashcardSet) {
+	public FlashcardHandler(String flashcardSet, ArrayList <Flashcard> flashcard_list) {
 		flashcardTracker = 0;
 		flashcardIndicator = 0;
 		this.flashcardSet = flashcardSet;
-		flashcard_list = DatabaseHandler.getAllFlashcards(flashcardSet);
+		this.flashcard_list = flashcard_list;
 		System.out.println("Current flashcard position at: " + flashcardTracker);
 	}
 	
@@ -91,8 +91,12 @@ public class FlashcardHandler {
 	 * Changes the flashcard
 	 */
 	public void changeFlashcard(int flashcardTracker) {
-		this.flashcardTracker = flashcardTracker;
-		System.out.println("Current flashcard position at: " + this.flashcardTracker);
+		
+		if(this.flashcardTracker != flashcardTracker) {
+			this.flashcardTracker = flashcardTracker;
+			System.out.println("Current flashcard position at: " + this.flashcardTracker);
+		}
+		
 	}
 	
 	/**
@@ -100,7 +104,7 @@ public class FlashcardHandler {
 	 * @return
 	 */
 	public Flashcard getFlashcard() {
-		return flashcard_list.get(flashcardTracker);
+		return this.flashcard_list.get(flashcardTracker);
 	}
 	
 	/**
@@ -108,7 +112,7 @@ public class FlashcardHandler {
 	 * @return
 	 */
 	public String getQuestion() {
-		return flashcard_list.get(flashcardTracker).question;
+		return this.flashcard_list.get(flashcardTracker).question;
 	}
 	
 	/**
@@ -116,7 +120,7 @@ public class FlashcardHandler {
 	 * @return
 	 */
 	public String getAnswer() {
-		return flashcard_list.get(flashcardTracker).answer;
+		return this.flashcard_list.get(flashcardTracker).answer;
 	}
 	
 	/**
@@ -135,7 +139,7 @@ public class FlashcardHandler {
 	 * @return
 	 */
 	public int getFlashcardIndicator() {
-		return flashcardIndicator;
+		return this.flashcardIndicator;
 	}
 	
 	/**
@@ -144,7 +148,7 @@ public class FlashcardHandler {
 	 * @return
 	 */
 	public int getFlashcardTracker() {
-		return flashcardTracker;
+		return this.flashcardTracker;
 	}
 	
 	/**

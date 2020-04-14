@@ -20,8 +20,9 @@ public class DatabaseHandler {
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
 			
-			//You can change the name of the schema instead of Flashcards
+			/* Switched to Test schema for testing the program */
 			String url = "jdbc:mysql://localhost:3306/Flashcards";
+			//String url = "jdbc:mysql://localhost:3306/Test";
 			
 			String username = "root", password = "pass";
 			Class.forName(driver);
@@ -43,7 +44,7 @@ public class DatabaseHandler {
 		
 		try {
 			Connection connect = getConnection();
-			//Escapes single quotes
+			//newSet = escapeCharacters(newSet);
 			PreparedStatement add = connect.prepareStatement("CREATE TABLE `[" + newSet + "]`(flashcard_id INT AUTO_INCREMENT PRIMARY KEY, question TEXT, answer TEXT);");
 			add.executeUpdate();
 			System.out.println("addFlashCardSet function success!!");
@@ -57,6 +58,7 @@ public class DatabaseHandler {
 		
 		try {
 			Connection connect = getConnection();
+			//goodByeSet = escapeCharacters2(goodByeSet);
 			PreparedStatement remove = connect.prepareStatement("DROP TABLE `[" + goodByeSet + "]`;");
 			remove.executeUpdate();
 			System.out.println("deleteFlashCardSet function success!!");
@@ -77,6 +79,7 @@ public class DatabaseHandler {
 			Connection connect = getConnection();
 			question = escapeCharacters(question);
 			answer = escapeCharacters(answer);
+			//flashcardSet = escapeCharacters2(flashcardSet);
 			PreparedStatement add = connect.prepareStatement("INSERT INTO `[" + flashcardSet + "]` (question, answer) VALUES('" + question + "','" + answer + "');");
 			add.executeUpdate();
 			System.out.println("addFlashCard function success!!");
@@ -99,7 +102,8 @@ public class DatabaseHandler {
 			oldAnswer = escapeCharacters(oldAnswer);
 			newQuestion = escapeCharacters(newQuestion);
 			newAnswer = escapeCharacters(newAnswer);
-			
+			//flashcardSet = escapeCharacters2(flashcardSet);
+
 			if(!oldQuestion.equals(newQuestion) && oldAnswer.equals(newAnswer)) {
 				edit = connect.prepareStatement("UPDATE `[" + flashcardSet + "]` SET question = '" + newQuestion + "' WHERE question = '" + oldQuestion + "';");
 				System.out.println("\nYou have changed the question!");
@@ -130,6 +134,8 @@ public class DatabaseHandler {
 		try {
 			Connection connect = getConnection();
 			question = escapeCharacters(question);
+			//flashcardSet = escapeCharacters2(flashcardSet);
+
 			PreparedStatement remove = connect.prepareStatement("DELETE FROM `[" + flashcardSet + "]` WHERE question = '" + question + "';");
 			remove.executeUpdate();
 			System.out.println("removeFlashCard function success!!");
@@ -152,7 +158,11 @@ public class DatabaseHandler {
 			
 			//Gets all tables from Flashcards schema
 			Connection connect = getConnection();
+			
+			/* Switched to Test schema for testing the program */
 			PreparedStatement getAll = connect.prepareStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'Flashcards';");
+			//PreparedStatement getAll = connect.prepareStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'Test';");
+			
 			ResultSet res = getAll.executeQuery();
 			
 			//Adds all flashcards sets to the array list and trims the tables' names to get rid of spaces
@@ -186,6 +196,7 @@ public class DatabaseHandler {
 			
 			Connection connect = getConnection();
 			question = escapeCharacters(question);
+			//flashcardSet = escapeCharacters2(flashcardSet);
 			PreparedStatement get = connect.prepareStatement("SELECT question, answer FROM `[" + flashcardSet + "]` WHERE question = '" + question + "';");
 			ResultSet res = get.executeQuery();
 			res.next();
@@ -211,6 +222,7 @@ public class DatabaseHandler {
 		
 		try {
 			Connection connect = getConnection();
+			//flashcardSet = escapeCharacters2(flashcardSet);
 			PreparedStatement getAll = connect.prepareStatement("SELECT question, answer FROM `[" + flashcardSet + "]`;");
 			ResultSet res = getAll.executeQuery();
 			
@@ -241,7 +253,11 @@ public class DatabaseHandler {
 			
 			Connection connect = getConnection();
 			flashcardSet = escapeCharacters(flashcardSet);
+			
+			/* Switched to Test schema for testing the program */
 			PreparedStatement get = connect.prepareStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'Flashcards' AND TABLE_NAME = '" + flashcardSet + "'");
+			//PreparedStatement get = connect.prepareStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'Test' AND TABLE_NAME = '" + flashcardSet + "'");
+			
 			ResultSet res = get.executeQuery();
 			System.out.println("flashcardSetExists function success!");
 
@@ -268,6 +284,7 @@ public class DatabaseHandler {
 			
 			Connection connect = getConnection();
 			question = escapeCharacters(question);
+			//flashcardSet = escapeCharacters2(flashcardSet);
 			PreparedStatement get = connect.prepareStatement("SELECT question FROM `[" + flashcardSet + "]` WHERE question = '" + question + "';");
 			ResultSet res = get.executeQuery();
 			System.out.println("flashcardExists function success!");
@@ -296,10 +313,10 @@ public class DatabaseHandler {
 	
 	/**
 	 * Adds backslashes before the escaping characters.
-	 * This is to prevent MySQL syntax errors
-	 * from happening. Returns the updated string.
+	 * This is to prevent MySQL syntax errors from 
+	 * happening. Returns the updated string.
 	 * 
-	 * MySQL escaping characters: single quote and backslash
+	 * MySQL escaping characters: single quotes an backslashes
 	 * @param new_string
 	 * @return
 	 */
@@ -310,10 +327,10 @@ public class DatabaseHandler {
 			//If an index references an escaping character, add a backslash
 			if(new_string.charAt(i) == '\'' || new_string.charAt(i) == '\\') {
 				
-				/*
-				 * Substring that starts with the first character
-				 * and ends with the a non-backslash character that's
-				 * next to the escaping character
+				
+				/* Substring that starts with the first character
+				 * and ends with the a character before the escaping 
+				 * character
 				 */
 				String substring = new_string.substring(0, i);
 				substring += "\\";

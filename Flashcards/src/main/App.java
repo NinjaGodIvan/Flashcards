@@ -229,12 +229,19 @@ public class App extends JFrame implements Menus{
 		c.insets = new Insets(10,0,0,0);
 		main.add(instruction,c);
 		
+		JLabel note = new JLabel("Note: You may not use backticks");
+		note.setFont(new Font("Helvetica", Font.PLAIN, 10));
+		c.gridx = 0;
+		c.gridy = 2;
+		c.insets = new Insets(2,0,0,0);
+		main.add(note,c);
+		
 		//Success or fail message
 		JLabel message = new JLabel("");
 		message.setForeground(Color.RED);
 		message.setFont(new Font("Helvetica", Font.PLAIN, 11));
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.insets = new Insets(10,4,0,0);
 		c.anchor = GridBagConstraints.WEST;
 		main.add(message,c);
@@ -243,7 +250,7 @@ public class App extends JFrame implements Menus{
 		JTextField flashcardSetName = new JTextField();
 		flashcardSetName.setPreferredSize(new Dimension(200,30));
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(0,0,0,0);
 		main.add(flashcardSetName,c);
@@ -252,42 +259,55 @@ public class App extends JFrame implements Menus{
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridBagLayout());
 		
-		JButton back = new JButton("Back");
-		back.addActionListener(new ActionListener() {
+		JButton back = new JButton("Back"), submit = new JButton("Submit");
+		
+		ActionListener actionListener = new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				switchPanel(main, mainMenu());
+				if(e.getSource().equals(back)) {
+					switchPanel(main, mainMenu());
+				} else {
+					//Will need to trim the string to get rid of trailing spaces that the user added
+					String new_set = flashcardSetName.getText().trim();
+					
+					//False, if there are no back ticks in the set's name
+					boolean backticksExisted = false;
+					
+					//Iterates through the set's characters 
+					for(int i = 0; i < new_set.length(); i++)
+						if(new_set.charAt(i) == '`') {
+							backticksExisted = true;
+							break;
+						}
+							
+					try {
+					
+						//Will need to surround the flashcard set with brackets for searching
+						if(backticksExisted) {
+							message.setText("No backticks allowed!!");
+						}else if(DatabaseHandler.flashcardSetExists("[" + new_set + "]")) {
+							message.setText("This flashcard set has already existed.");
+						}else if(new_set.toCharArray().length < 1) {
+							message.setText("Textfield is blank :/");
+						}else {
+							DatabaseHandler.addFlashCardSet(new_set);
+							switchPanel(main, successMessage(0, new_set));
+						}					
+					}catch(Exception ex) {
+						System.out.println(ex);
+					}
+				}
 			}
-		});
+		};
+		
+		back.addActionListener(actionListener);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(5,0,0,0);
 		buttonPanel.add(back,c);
 		
-		JButton submit = new JButton("Submit");
-		submit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				try {
-				
-					//Will need to surround the flashcard set with brackets for searching
-					if(DatabaseHandler.flashcardSetExists("[" +flashcardSetName.getText().trim() + "]")) {
-						message.setText("This flashcard set has already existed.");
-					}else if(flashcardSetName.getText().toCharArray().length < 1) {
-						message.setText("Flashcard set name needs at least one character.");
-					}else {
-						//Will need to trim the string to get rid of trailing spaces that the user added
-						DatabaseHandler.addFlashCardSet(flashcardSetName.getText().trim());
-						switchPanel(main, successMessage(0, flashcardSetName.getText().trim()));
-					}					
-				}catch(Exception ex) {
-					System.out.println(ex);
-				}
-			}
-			
-		});
+		submit.addActionListener(actionListener);
 		c.gridx = 1;
 		c.gridy = 0;
 		c.insets = new Insets(5,10,0,0);
@@ -295,7 +315,7 @@ public class App extends JFrame implements Menus{
 		
 		//Adds button panel to main
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 5;
 		main.add(buttonPanel,c);
 		
 		return main;
@@ -805,6 +825,12 @@ public class App extends JFrame implements Menus{
 	 * to edit
 	 */
 	public JPanel editFlashcardStepOne(String flashcardSet,  ArrayList <Flashcard> flashcard_list) {
+		
+		//Restores itemSelected back to nothing
+		if(!itemSelected.equals("")) {
+			System.out.println("[Resetting itemSelected]");
+			itemSelected = "";
+		}
 				
 		JPanel main = new JPanel();
 		main.setLayout(new GridBagLayout());
@@ -1511,7 +1537,7 @@ public class App extends JFrame implements Menus{
 							if(flashcard_list.isEmpty())
 								switchPanel(main,failMessage(3, itemSelected));
 							else {
-								flashcardHandler = new FlashcardHandler(itemSelected);
+								flashcardHandler = new FlashcardHandler(itemSelected, flashcard_list);
 								switchPanel(main, viewFlashcards());
 							}
 						} else {

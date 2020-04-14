@@ -1,10 +1,26 @@
 # Flashcards
 
-**NOTE**: *This project is currently in development. I do not recommend you cloning this repo (downloading it) until it's complete. This will be finalized around this April. So hang tight!*
-
 Are you tired of having to write down your own flashcards? Are you cutting your budget even though that it costs a penny to buy a set of index cards?
 
 Flashcards is a Java application where you can customize your own flashcards and their sets. You can use this app without having to write down any flashcards if your hands are too tired of writing words with a pencil. Save money and download this app for **FREE**!
+
+#### DOWNLOAD:
+
+**NOTE:** *You do not need to download JAR file (mysql-connector-java-8.0.19.jar) to connect your IDE to MySQL server. When you downloaded Flashcards, it is already added to the library.*
+
+1. Download MySQL => **https://dev.mysql.com/downloads/installer/**. Choose the correct installer based on your operating system.
+
+2. Run MySQL server if didn't ran yet.
+
+3. Open your terminal or Git.
+
+4. **For Eclipse users:** Use the following command => **cd path_name** to branch to your Eclipse workspace.
+
+5. **For NetBeans users:** 
+
+6. Use the following command => **git clone https://github.com/NinjaGodIvan/Flashcards** to clone the Flashcards repository onto your directory.
+
+7. Open the project and run it.
 
 #### FEATURES:
 
