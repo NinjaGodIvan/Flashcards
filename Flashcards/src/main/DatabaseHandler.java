@@ -20,7 +20,6 @@ public class DatabaseHandler {
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
 			
-			/* Switched to Test schema for testing the program */
 			String url = "jdbc:mysql://localhost:3306/Flashcards";
 			//String url = "jdbc:mysql://localhost:3306/Test";
 			

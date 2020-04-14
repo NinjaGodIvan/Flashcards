@@ -20,7 +20,7 @@ Flashcards is a Java application where you can customize your own flashcards and
 
 6. Use the following command => **git clone https://github.com/NinjaGodIvan/Flashcards** to clone the Flashcards repository onto your directory.
 
-7. Open the project and run it.
+7. Open the project and run it!
 
 #### FEATURES:
 
