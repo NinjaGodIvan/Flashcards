@@ -4,9 +4,9 @@ Are you tired of having to write down your own flashcards? Are you cutting your 
 
 Flashcards is a Java application where you can customize your own flashcards and their sets. You can use this app without having to write down any flashcards if your hands are too tired of writing words with a pencil. Save money and download this app for **FREE**!
 
-#### DOWNLOAD:
+### DOWNLOAD:
 
-**NOTE:** *After downloading MySQL, go through all the steps and run the server.*
+**NOTE:** *After downloading MySQL, go through all the steps and run the server before starting the app.*
 
 MySQL download link => **https://dev.mysql.com/downloads/mysql/**.
 
@@ -16,7 +16,7 @@ mysql-connector-java-8.0.19.jar download link => **https://dev.mysql.com/downloa
 
 On the console log from any IDE or terminal, if it displays this following error: 
 
-**The server time zone value 'time_zone_value' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support**
+**The server time zone value 'time_zone' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support**
 
 Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
@@ -26,39 +26,39 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 2. Clone the Flashcards repository to that workspace (Use **git clone https://github.com/NinjaGodIvan/Flashcards**)
 
-3. Open Eclipse => File => Open Projects from File System
+3. Open Eclipse => **File** => **Open Projects from File System**
 
-4. On Import Source, select the Flashcards project folder and open it.
+4. On **Import Source**, select the Flashcards project folder and open it.
 
-5. After opening the Flashcards project, select Reference Libraries and make sure that mysql-connector-java-8.0.19.jar is included. If not, then you will need to add it to the library.
+5. After opening the Flashcards project, select **Reference Libraries** and make sure that **mysql-connector-java-8.0.19.jar** is included. If not, then you will need to add it to the library.
 
 6. Run the project and have fun!
 	
 ##### FOR NETBEANS USERS:
 
-1. Open NetBeans => Team => Git => Clone
+1. Open NetBeans => **Team** => **Git** => **Clone**
 
 2. Copy the Flashcards repository URL and paste it on the URL textfield.
 
 3. Clone the Flashcards repository to the destination folder.
 
-4. When a pop-up window appears, select "Open Projects"
+4. When a pop-up window appears, select **Open Projects**
 
-5. Select Java => Java Project with Existing Sources
+5. Select **Java** => **Java Project with Existing Sources**
 
 6. Name your Flashcards Project
 
-7. On "Source Package Folders", open Flashcards/images and Flashcards/src
+7. On **Source Package Folders**, open Flashcards/images and Flashcards/src
 
-8. Select "Finish" to create a Java Application for Flashcards
+8. Select **Finish** to create a Java Application for Flashcards
 
-9. On the Projects tab, right click "Libraries" and select "Add JAR/Folder"
+9. On the Projects tab, right click **Libraries** and select **Add JAR/Folder**
 
-10. Select "mysql-connector-java-8.0.19.jar" and add it to Libraries.
+10. Select **mysql-connector-java-8.0.19.jar** and add it to Libraries.
 
 11. Run the project and have fun!
 	
-#### FEATURES:
+### FEATURES:
 
 1. **Create a flashcard set**: You can start by adding a flashcard set to add any flashcards.
 
@@ -72,7 +72,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 6. **View flashcards**: This is where you can view your own flashcards. After selecting a flashcard set to view your flashcards, the flashcard maker will be constructing every flashcards from the set. You can press "Previous" or "Next" to go through the flashcards. It also features a glossary where you can go to any flashcard within an instant!
 
-#### FLASHCARDS APP INFO:
+### FLASHCARDS APP INFO:
 
 1. All questions from the flashcards are **UNIQUE**. Any question that already exists in the data is invalid. This prevents multiple duplications of deleting flashcards. If you enter a question that already exists, then you will be prompt to reenter the question. Making the same question but with different amount of non-leading or non-trailing spaces is also invalid.
 
@@ -80,7 +80,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 3. Deleting the flashcard set deletes all flashcards within that set.
 
-#### MySQL INFO:
+### MySQL INFO:
 
 1. Make sure that the user and your password is correct on DatabaseHandler.java when connecting to MySQL server. Otherwise, it will throw an error and you can't access your flashcard sets.
 
