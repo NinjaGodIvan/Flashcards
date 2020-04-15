@@ -10,6 +10,8 @@ Flashcards is a Java application where you can customize your own flashcards and
 
 MySQL download link => **https://dev.mysql.com/downloads/mysql/**.
 
+MySQL Workbench download link => **https://dev.mysql.com/downloads/workbench/**
+
 mysql-connector-java-8.0.19.jar download link => **https://dev.mysql.com/downloads/connector/j/**
 
 ##### FOR ALL USERS
