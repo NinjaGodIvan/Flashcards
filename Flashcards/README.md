@@ -4,7 +4,7 @@ Are you tired of having to write down your own flashcards? Are you cutting your 
 
 Flashcards is a Java application where you can customize your own flashcards and their sets. You can use this app without having to write down any flashcards if your hands are too tired of writing words with a pencil. Save money and download this app for **FREE**!
 
-### DOWNLOAD:
+### DOWNLOAD
 
 **NOTE:** *After downloading MySQL, go through all the steps and run the server before starting the app.*
 
@@ -12,7 +12,7 @@ MySQL download link => **https://dev.mysql.com/downloads/mysql/**.
 
 mysql-connector-java-8.0.19.jar download link => **https://dev.mysql.com/downloads/connector/j/**
 
-##### FOR ALL USERS:
+##### FOR ALL USERS
 
 On the console log from any IDE or terminal, if it displays this following error: 
 
@@ -20,7 +20,7 @@ On the console log from any IDE or terminal, if it displays this following error
 
 Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
-##### FOR ECLIPSE USERS:
+##### FOR ECLIPSE USERS
 
 1. Open your terminal or Git, and branch to your workspace of Eclipse.
 
@@ -58,7 +58,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 11. Run the project and have fun!
 	
-### FEATURES:
+### FEATURES
 
 1. **Create a flashcard set**: You can start by adding a flashcard set to add any flashcards.
 
@@ -72,7 +72,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 6. **View flashcards**: This is where you can view your own flashcards. After selecting a flashcard set to view your flashcards, the flashcard maker will be constructing every flashcards from the set. You can press "Previous" or "Next" to go through the flashcards. It also features a glossary where you can go to any flashcard within an instant!
 
-### FLASHCARDS APP INFO:
+### FLASHCARDS APP INFO
 
 1. All questions from the flashcards are **UNIQUE**. Any question that already exists in the data is invalid. This prevents multiple duplications of deleting flashcards. If you enter a question that already exists, then you will be prompt to reenter the question. Making the same question but with different amount of non-leading or non-trailing spaces is also invalid.
 
@@ -80,7 +80,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 3. Deleting the flashcard set deletes all flashcards within that set.
 
-### MySQL INFO:
+### MySQL INFO
 
 1. Make sure that the user and your password is correct on DatabaseHandler.java when connecting to MySQL server. Otherwise, it will throw an error and you can't access your flashcard sets.
 
