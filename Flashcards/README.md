@@ -11,7 +11,7 @@ Flashcards is a Java application where you can customize your own flashcards and
 MySQL download link => **https://dev.mysql.com/downloads/mysql/**.
 mysql-connector-java-8.0.19.jar download link => **https://dev.mysql.com/downloads/connector/j/**
 
-#####FOR ALL USERS:
+####FOR ALL USERS:
 
 On the console log from any IDE or terminal, if it displays this following error: 
 
@@ -19,28 +19,43 @@ On the console log from any IDE or terminal, if it displays this following error
 
 Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
+**FOR ECLIPSE USERS:**
 
+1. Open your terminal or Git, and branch to your workspace of Eclipse.
 
-#####FOR ECLIPSE USERS:
-	1. Open your terminal or Git, and branch to your workspace of Eclipse.
-	2. Clone the Flashcards repository to that workspace (Use git clone https://github.com/NinjaGodIvan/Flashcards)
-	3. Open Eclipse => File => Open Projects from File System
-	4. On Import Source, select the Flashcards project folder and open it.
-	5. After opening the Flashcards project, select Reference Libraries and make sure that mysql-connector-java-8.0.19.jar is included. If not, then you will need to add it to the library.
-	6. Run the project and have fun!
+2. Clone the Flashcards repository to that workspace (Use git clone https://github.com/NinjaGodIvan/Flashcards)
+
+3. Open Eclipse => File => Open Projects from File System
+
+4. On Import Source, select the Flashcards project folder and open it.
+
+5. After opening the Flashcards project, select Reference Libraries and make sure that mysql-connector-java-8.0.19.jar is included. If not, then you will need to add it to the library.
+
+6. Run the project and have fun!
 	
-#####FOR NETBEANS USERS:
-	1. Open NetBeans => Team => Git => Clone
-	2. Copy the Flashcards repository URL and paste it on the URL textfield.
-	3. Clone the Flashcards repository to the destination folder.
-	4. When a pop-up window appears, select "Open Projects"
-	5. Select Java => Java Project with Existing Sources
-	6. Name your Flashcards Project
-	7. On "Source Package Folders", open Flashcards/images and Flashcards/src
-	8. Select "Finish" to create a Java Application for Flashcards
-	9. On the Projects tab, right click "Libraries" and select "Add JAR/Folder"
-	10. Select "mysql-connector-java-8.0.19.jar" and add it to Libraries.
-	11. Run the project and have fun!
+**FOR NETBEANS USERS:**
+
+1. Open NetBeans => Team => Git => Clone
+
+2. Copy the Flashcards repository URL and paste it on the URL textfield.
+
+3. Clone the Flashcards repository to the destination folder.
+
+4. When a pop-up window appears, select "Open Projects"
+
+5. Select Java => Java Project with Existing Sources
+
+6. Name your Flashcards Project
+
+7. On "Source Package Folders", open Flashcards/images and Flashcards/src
+
+8. Select "Finish" to create a Java Application for Flashcards
+
+9. On the Projects tab, right click "Libraries" and select "Add JAR/Folder"
+
+10. Select "mysql-connector-java-8.0.19.jar" and add it to Libraries.
+
+11. Run the project and have fun!
 	
 ####FEATURES:
 
