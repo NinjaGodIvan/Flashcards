@@ -4,14 +4,14 @@ Are you tired of having to write down your own flashcards? Are you cutting your 
 
 Flashcards is a Java application where you can customize your own flashcards and their sets. You can use this app without having to write down any flashcards if your hands are too tired of writing words with a pencil. Save money and download this app for **FREE**!
 
-####DOWNLOAD:
+#### DOWNLOAD:
 
 **NOTE:** *After downloading MySQL, go through all the steps and run the server.*
 
 MySQL download link => **https://dev.mysql.com/downloads/mysql/**.
 mysql-connector-java-8.0.19.jar download link => **https://dev.mysql.com/downloads/connector/j/**
 
-####FOR ALL USERS:
+##### FOR ALL USERS:
 
 On the console log from any IDE or terminal, if it displays this following error: 
 
@@ -19,7 +19,7 @@ On the console log from any IDE or terminal, if it displays this following error
 
 Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
-**FOR ECLIPSE USERS:**
+##### FOR ECLIPSE USERS:
 
 1. Open your terminal or Git, and branch to your workspace of Eclipse.
 
@@ -33,7 +33,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 6. Run the project and have fun!
 	
-**FOR NETBEANS USERS:**
+##### FOR NETBEANS USERS:
 
 1. Open NetBeans => Team => Git => Clone
 
