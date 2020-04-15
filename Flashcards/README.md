@@ -34,7 +34,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 6. Run the project and have fun!
 	
-##### FOR NETBEANS USERS:
+##### FOR NETBEANS USERS
 
 1. Open NetBeans => **Team** => **Git** => **Clone**
 
