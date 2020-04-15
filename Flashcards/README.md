@@ -57,7 +57,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 11. Run the project and have fun!
 	
-####FEATURES:
+#### FEATURES:
 
 1. **Create a flashcard set**: You can start by adding a flashcard set to add any flashcards.
 
