@@ -24,7 +24,7 @@ Run this MySQL command => **SET GLOBAL time_zone = 'time_zone_value'**
 
 1. Open your terminal or Git, and branch to your workspace of Eclipse.
 
-2. Clone the Flashcards repository to that workspace (Use git clone https://github.com/NinjaGodIvan/Flashcards)
+2. Clone the Flashcards repository to that workspace (Use **git clone https://github.com/NinjaGodIvan/Flashcards**)
 
 3. Open Eclipse => File => Open Projects from File System
 
